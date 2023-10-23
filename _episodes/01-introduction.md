@@ -3,24 +3,26 @@ title: "Introduction"
 teaching: 60
 exercises: 30
 questions:
-- "Why to use Matplotlib for HEP?"
-- "What kind of plots can be done?"
+- "What is a database management system and why it is a good idea to use one?"
+- "What are the differences between relational and non-relational databases?"
 objectives:
-- "Understand the basics of Matplotlib"
-- "Learn how to manipulate the elements of a plot"
-keypoints:
-- "Matplotlib graphs data in Figures, each of which can contain components that can be manipulated: axis, legend, labels, etc."
-- "Many kinds of plots can be produced: scatter plots, bar plots, pie charts, and many more"
+- "Understand the concepts of a database management system"
+- "Learn about common database management systems used in HEP and Nuclear Physics"
+- keypoints:
+- ""
+- ""
 ---
-The example-based nature of [Matplotlib documentation](https://matplotlib.org/) is GREAT.
 
-Matplotlib is the standard when it comes to making plots in Python. It is versatile and allows for lots of functionality and different ways to produce many plots.
-We will be focusing on using matplotlib for High Energy Physics.
+# What is a database?
 
-# A simple example
+A database is a collection of data stored in a computer system. The data is typically organized to model relevant
+characteristics of the information contained in the database.
+For example, a database that contains information on members of a collaboration might be organized to model
+the institutions they belong to, and the publications they have authored, the relationships between the members, etc.
 
-As with any Python code it is always good practice to import the necessary libraries as a first step.
+# Database management systems
 
-```python
-import matplotlib.pyplot as plt
-```
+A database management system (DBMS) is a computer software application that interacts with the user, other applications,
+and the database itself to capture and analyze data.
+
+A general-purpose DBMS is designed to allow the definition, creation, querying, update, and administration of databases.
