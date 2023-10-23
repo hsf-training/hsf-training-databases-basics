@@ -14,11 +14,11 @@
 > Click [here](https://hsf-training.github.io/hsf-training-databases-basics/) for the training website!
 
 
-Introduction to databases with application in HEP and Nuclear Physics
+Introduction to databases with applications in HEP and Nuclear Physics
 
 ## 📅 Past events and videos
 
-* 🎥 [Fixme Sample event Dec 1 - 13, 2022](https://indico.cern.ch/)
+* ⛏️ [Kick-off! October 23, 2023](https://indico.cern.ch/event/1338915/overview)
 
 Emoji key: 🎥 (full video recordings availabile), ⛏️ (hackathon)
 
