@@ -1,4 +1,7 @@
 [![HSF Training Center][training-center-badge]][hsf-training-center]
+<!-- ALL-CONTRIBUTORS-BADGE:START - Do not remove or modify this section -->
+[![All Contributors](https://img.shields.io/badge/all_contributors-1-orange.svg?style=flat-square)](#contributors-)
+<!-- ALL-CONTRIBUTORS-BADGE:END -->
 [![Upcoming Events][schools-badge]][schools]
 [![Twitter Follow][twitter-badge]][twitter]
 
@@ -14,11 +17,11 @@
 > Click [here](https://hsf-training.github.io/hsf-training-databases-basics/) for the training website!
 
 
-Introduction to databases with application in HEP and Nuclear Physics
+Introduction to databases with applications in HEP and Nuclear Physics
 
 ## 📅 Past events and videos
 
-* 🎥 [Fixme Sample event Dec 1 - 13, 2022](https://indico.cern.ch/)
+* ⛏️ [Kick-off! October 23, 2023](https://indico.cern.ch/event/1338915/overview)
 
 Emoji key: 🎥 (full video recordings availabile), ⛏️ (hackathon)
 
@@ -70,6 +73,14 @@ the content of the lesson:
 <!-- ALL-CONTRIBUTORS-LIST:START - Do not remove or modify this section -->
 <!-- prettier-ignore-start -->
 <!-- markdownlint-disable -->
+<table>
+  <tbody>
+    <tr>
+      <td align="center" valign="top" width="14.28%"><a href="https://github.com/panta-123"><img src="https://avatars.githubusercontent.com/u/47672624?v=4?s=100" width="100px;" alt="Anil Panta"/><br /><sub><b>Anil Panta</b></sub></a><br /><a href="#content-panta-123" title="Content">🖋</a></td>
+    </tr>
+  </tbody>
+</table>
+
 <!-- markdownlint-restore -->
 <!-- prettier-ignore-end -->
 
@@ -93,3 +104,16 @@ Instead, all regular contributors are listed on our [HSF Training Community page
 [schools-badge]: https://img.shields.io/badge/upcoming%20events-browse-ff69b4
 [twitter-badge]: https://img.shields.io/twitter/follow/hsftraining?style=social
 [twitter]: https://twitter.com/hsftraining
+
+## Contributors ✨
+
+Thanks goes to these wonderful people ([emoji key](https://allcontributors.org/docs/en/emoji-key)):
+
+<!-- ALL-CONTRIBUTORS-LIST:START - Do not remove or modify this section -->
+<!-- prettier-ignore-start -->
+<!-- markdownlint-disable -->
+<!-- markdownlint-restore -->
+<!-- prettier-ignore-end -->
+<!-- ALL-CONTRIBUTORS-LIST:END -->
+
+This project follows the [all-contributors](https://github.com/all-contributors/all-contributors) specification. Contributions of any kind welcome!
