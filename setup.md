@@ -12,14 +12,13 @@ docker run -d --name=metadata -p 3306:3306 --env="MYSQL_ROOT_PASSWORD=mypassword
 Here we named the container as ``metadata`` and your mysql server running on host ``localhost`` and port ``3306``. 
 A user with name ``root`` already exists with password you set as ``mypassword``.
 
->## Port conflict issues
->If you run into port conflict issue. Then you can change the port number in place of ``XXXX`` in below.
-> ~~~bash docker run -d --name=metadata -p XXXX:3306 --env="MYSQL_ROOT_PASSWORD=mypassword" mysql ~~~
+> ## Port conflict issues
+> If you run into port conflict issue. Then you can change the port number to other number in place of ``XXXX`` in ``-p xxxx:3306`` in above docker command.
 
-To test the if everything is setup and working run the following command.
+To test that if everything is setup and working run the following command.
 ~~~bash
 docker exec -it metadata bash -c "mysql -uroot -pmypassword"
 ~~~
-you should the ``mysql`` prompt command line as ``mysql> `` . Then evrything is working and you can type ``exit;`` on the mysql commad prompt. 
+you should see the mysql prompt as ``mysql>``. If yes then everything is working. You can type ``exit;`` in the mysql command prompt to exit.
 
 
