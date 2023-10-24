@@ -1,7 +1,8 @@
 ---
-title: "NoSQL queries"
+title: "NOSQL Queries"
 teaching: x
 exercises: x
+questions:
 - ""
 - ""
 objectives:
@@ -27,61 +28,20 @@ Elasticsearch provides powerful search capabilities. Here are some core Elastics
 - **Update Documents**: Modify existing data in documents.
 - **Delete Documents**: Remove documents from an index.
 
-## Setting up for Elasticsearch Queries
+## Setting up for Elasticsearch/Opensearch Queries
 
-To interact with Elasticsearch, you'll typically use a client library or a tool like Kibana. Ensure you have Elasticsearch installed and configured.
-
-## Creating an Index
-
-First, let's create an Elasticsearch index named "metadata."
-
-```json
-PUT /metadata
-{
-  "settings": {
-    "number_of_shards": 1,
-    "number_of_replicas": 1
-  }
-}
-
-POST /metadata/dataset/1
-{
-  "filename": "example_file1",
-  "run_number": 12345,
-  "total_event": 1000000,
-  "collision_type": "PbPb",
-  "data_type": "simulated",
-  "collision_energy": 200
-}
-
-GET /metadata/dataset/_search
-{
-  "query": {
-    "match_all": {}
-  }
-}
-
-GET /metadata/dataset/_search
-{
-  "query": {
-    "term": {
-      "collision_type": "PbPb"
-    }
-  }
-}
-
-
-POST /metadata/dataset/1/_update
-{
-  "doc": {
-    "data_type": "new_data_type"
-  }
-}
-
-DELETE /metadata/dataset/1
-
+Install the elasticsearch Python Cleint:
+```bash
+pip install elasticsearch
 ```
 
+Install the OpenSearch Python client:
+```bash
+pip install opensearch-py
+```
+
+
+## Creating an Index
 ```python
 from elasticsearch import Elasticsearch
 #from opensearchpy import OpenSearch
@@ -101,21 +61,36 @@ index_settings = {
     }
 }
 es.indices.create(index=index_name, body=index_settings)
+```
 
+## Index into a document
+
+```python
 # Index a document
-document = {
-    "filename": "example_file1",
-    "run_number": 12345,
-    "total_event": 1000000,
-    "collision_type": "PbPb",
-    "data_type": "simulated",
-    "collision_energy": 200
+document1 = {
+    "filename": "expx.myfile1.root",
+    "run_number": 100,
+    "total_event": 1112,
+    "collision_type": "pp",
+    "data_type": "data",
+    "collision_energy": 11275
 }
-# We're not specifying document_id here
+document2 = {
+    "filename": "expx.myfile2.root",
+    "run_number": 55,
+    "total_event": 999,
+    "collision_type": "pPb",
+    "data_type": "mc",
+    "collision_energy": 1127
+}
 
 es.index(index=index_name, doc_type="dataset", body=document)
+#es.index(index=index_name, doc_type="dataset", body=document2)
+
+```
 
 # Search for documents by filename
+```python
 search_query = {
     "query": {
         "term": {
@@ -126,25 +101,29 @@ search_query = {
 search_results = es.search(index=index_name, doc_type="dataset", body=search_query)
 for hit in search_results['hits']['hits']:
     print(hit['_source'])
+```
 
 # Update a document by filename
+```python
 update_query = {
     "doc": {
         "data_type": "new_data_type"
     }
 }
 # Update based on the "filename" field
-es.update_by_query(index=index_name, doc_type="dataset", body={"query": {"term": {"filename.keyword": "example_file1"}}}, body=update_query)
+es.update_by_query(index=index_name, doc_type="dataset", body={"query": {"term": {"filename.keyword": "expx.myfile1.root"}}}, body=update_query)
+```
+
 
 # Delete a document by filename
+```python
 delete_query = {
     "query": {
         "term": {
-            "filename.keyword": "example_file1"  # Delete by filename
+            "filename.keyword": "expx.myfile1.root"  # Delete by filename
         }
     }
 }
 # Delete based on the "filename" field
 es.delete_by_query(index=index_name, doc_type="dataset", body=delete_query)
-
 ```
