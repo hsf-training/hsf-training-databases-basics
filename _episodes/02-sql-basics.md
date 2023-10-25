@@ -13,9 +13,6 @@ keypoints:
 - ""
 ---
 
-# SQL Basics
-
-In this section, we'll cover fundamental SQL commands that are essential for working with MySQL.
 
 ## SQL Commands
 
@@ -28,15 +25,15 @@ Here are some of the core SQL commands that you'll use in MySQL:
 - `UPDATE`: Modify existing data in a table.
 - `DELETE`: Remove data from a table.
 
-## setting up for sql commands 
-In the terminal , run the follwoing command
+## Setting up for sql commands
+In the terminal , run the following command
 ~~~bash
 docker exec -it metadata bash -c "mysql -uroot -pmypassword"
 ~~~
 Then you will see mysql command prompt as ``mysql>`` . All the sql command has to be typed in this command prompt.
 
-## Creating a Database
 
+## Create a database.
 We will first create a database named ``metadata`` in our mysql server.
 ```sql
 CREATE DATABASE metadata;
@@ -46,8 +43,35 @@ To work with a specific database, you can use the USE command. For instance, to 
 ```sql
 USE metadata;
 ```
+~~~
+Database changed
+~~~
+{: .output}
 
-Tables are used to structure and store data. Here's how you can create a table named "dataset" within the "metadata" database:
+## Creating a table
+
+In SQL, the CREATE TABLE command is used to define a new table within a database. When creating a table, you specify the structure of the table, including the names of its columns, the data types for each column, and any constraints that ensure data integrity.
+
+Here's a breakdown of the components within the command ``CREATE TABLE <table_name> (<colunmn_name> <data_type> <constraints>)``command:
+
+- ``<table_name>``: This is the name of the table you're creating. It should be meaningful and reflect the type of data the table will store.
+
+- ``<colunmn_name>``: you define the columns of the table.
+
+- ``<data_type>``: This defines the kind of data that a column in your table can hold.      Choosing the right data type is crucial because it determines how the data will be stored and processed. Some example for  commonly used data types are:
+    - INT (Integer): This data type is used for whole numbers.
+    - VARCHAR(n) (Variable Character): This is used for storing variable-length character strings. The (n) represents the maximum length of the string, ensuring that the stored data does not exceed a specified limit.
+    - TEXT: The TEXT data type is used for storing longer text or character data. It's suitable for holding textual content that can vary in length. Unlike VARCHAR, which has a specified maximum length, TEXT allows for storing larger and more flexible text content.
+
+- ``<constraints>``: You can apply constraints to columns. Common constraints include:
+    - NOT NULL: This ensures that a value must be provided for the column in every row.
+    - UNIQUE: This guarantees that each value in the column is unique across all rows in the table.
+    - PRIMARY KEY: Designates a column as the primary key, providing a unique identifier for each row.
+
+By combining these elements, you define the table's structure and ensure data consistency and uniqueness. This structured approach to table creation is fundamental to relational databases and is a key part of database design. Keep in mind a database can have multiple tables.
+
+Now, let's proceed with creating our "dataset" table in "metadata" database.
+
 ```sql
 CREATE TABLE dataset (
     id INT AUTO_INCREMENT PRIMARY KEY,
@@ -59,33 +83,77 @@ CREATE TABLE dataset (
     collision_energy INT NOT NULL
 );
 ```
-
-collision_type = "PbPb, pp, pPb, Interfill"
-
-You can use the INSERT INTO command to add records to a table. Here's an example of inserting data into the "dataset" table:
+You can see the table and corresponding columns by using the command
 ```sql
-INSERT INTO dataset (filename, run_number, total_event, collision_type, data_type collision_energy)
-VALUES (expx.myfile1.root, 100, 1112, "pp", "data", 11275)
+SHOW COLUMNS FROM dataset;
+```
+~~~
++------------------+--------------+------+-----+---------+----------------+
+| Field            | Type         | Null | Key | Default | Extra          |
++------------------+--------------+------+-----+---------+----------------+
+| id               | int          | NO   | PRI | NULL    | auto_increment |
+| filename         | varchar(255) | NO   | UNI | NULL    |                |
+| run_number       | int          | NO   |     | NULL    |                |
+| total_event      | int          | NO   |     | NULL    |                |
+| collision_type   | text         | YES  |     | NULL    |                |
+| data_type        | text         | YES  |     | NULL    |                |
+| collision_energy | int          | NO   |     | NULL    |                |
++------------------+--------------+------+-----+---------+----------------+
+~~~
+{: .output}
+
+## INSERT record into table
+You can use the INSERT INTO command to add records to a table. This command has structure ``INSERT INTO <table_name> (<column_name>) Values (<column_value>)``.
+Here's an example of inserting data into the "dataset" table:
+```sql
+INSERT INTO dataset (filename, run_number, total_event, collision_type, data_type, collision_energy)
+VALUES ("expx.myfile1.root", 100, 1112, "pp", "data", 11275);
 ```
 
+
 ```sql
-INSERT INTO dataset (filename, run_number, total_event, collision_type, data_type collision_energy)
-VALUES (expx.myfile2.root, 55, 999, "pPb", "mc", 1127)
+INSERT INTO dataset (filename, run_number, total_event, collision_type, data_type, collision_energy)
+VALUES ("expx.myfile2.root", 55, 999, "pPb", "mc", 1127);
 ```
 
-The SELECT command allows you to retrieve data from a table. To retrieve all records from the "dataset" table, you can use:
+## Search record in the table
+
+The SELECT command allows you to retrieve records from a table. To retrieve all records from the "dataset" table, you can use:
 ```sql
 SELECT * FROM dataset;
 ```
+~~~
+mysql> SELECT * FROM dataset;
++----+-------------------+------------+-------------+----------------+-----------+------------------+
+| id | filename          | run_number | total_event | collision_type | data_type | collision_energy |
++----+-------------------+------------+-------------+----------------+-----------+------------------+
+|  1 | expx.myfile1.root |        100 |        1112 | pp             | data      |            11275 |
+|  2 | expx.myfile2.root |         55 |         999 | pPb            | mc        |             1127 |
++----+-------------------+------------+-------------+----------------+-----------+------------------+
+~~~
+{: .output}
 You can select specific columns by listing them after the SELECT statement:
 ```sql
 SELECT filename FROM dataset;
 ```
+~~~
++-------------------+
+| filename          |
++-------------------+
+| expx.myfile1.root |
+| expx.myfile2.root |
++-------------------+
+~~~
+{: .output}
+2 rows in set (0.00 sec)
 
-To filter data based on certain conditions, you can use the WHERE clause. For example, to select filenames where the "collision_type" is 'pp':
+### Search with some condition
+To filter data based on certain conditions, you can use the WHERE clause. This allows you to filter rows based on conditions that you specify. For example, to select filenames where the "collision_type" is 'pp':
 ```sql
 SELECT filename FROM dataset WHERE collision_type='pp';
-SELECT filename FROM dataset WHERE run_number > 50;
+```
+In addition you can use logical operators such as AND and OR to combine multiple conditions in the WHERE statement.
+```sql
 SELECT filename FROM dataset WHERE run_number > 50 AND collision_type='pp';
 ```
 
@@ -93,7 +161,7 @@ SELECT filename FROM dataset WHERE run_number > 50 AND collision_type='pp';
 
 > ## SELECT on different condition
 >
-> Get the filename of condition event_number > 1000 and data_type is ``mc``
+> Get the filename of condition total_event > 1000 and data_type is "data".
 >
 > > ## Solution
 > >
@@ -103,21 +171,53 @@ SELECT filename FROM dataset WHERE run_number > 50 AND collision_type='pp';
 > > {: .source}
 > >
 > > ~~~
-> > xxxx
+>> +-------------------+
+>>| filename          |
+>> +-------------------+
+>> | expx.myfile1.root |
+>> +-------------------+
+>> 1 row in set (0.00 sec)
 > > ~~~
 > > {: .output}
 > {: .solution}
 {: .challenge}
 
-The UPDATE command is used to make changes to existing data. For example, if you want to update the "data_type" for a specific record, you can use:
+## UPDATE
+The UPDATE command is used to make changes to existing record. For example, if you want to update the "collision_type" and "collision_energy" for a specific record, you can use:
 
 ```sql
-UPDATE dataset 
-SET collision_type = 'new_type', collision_energy = 300
+UPDATE dataset
+SET collision_type = 'PbPb', collision_energy = 300
 WHERE filename = 'expx.myfile1.root';
 ```
 
-The DELETE command is used to remove data from a table. To delete a record with a specific filename, you can use:
+> ## Update on a condition
+>
+> update the total_event of file "expx.myfile2.root" to 800.
+>
+> > ## Solution
+> >
+> > ```sql
+> > UPDATE dataset
+> > SET total_event = 800
+> > WHERE filename = 'expx.myfile2.root';
+> > ```
+> > {: .source}
+> >
+> > ~~~
+>> +-------------------+
+>>| filename          |
+>> +-------------------+
+>> | expx.myfile1.root |
+>> +-------------------+
+>> 1 row in set (0.00 sec)
+> > ~~~
+> > {: .output}
+> {: .solution}
+{: .challenge}
+
+## DELETE
+The DELETE command is used to remove record from a table. To delete a record with a specific filename, you can use:
 ```sql
 DELETE FROM dataset
 WHERE filename = 'expx.myfile2.root';
