@@ -32,7 +32,7 @@ Creating a vittual environment.
 python -m venv venv
 ```
 
-Activate the venv 
+Activate the venv
 ```bash
 source venv/bin/activate
 ```
@@ -59,7 +59,7 @@ lets create a engine for our mysql connection.
 from sqlalchemy import create_engine
 
 # Define the MySQL database connection URL
-db_url = 'mysql://root:mypassword@localhost:3306/metadata'
+db_url = "mysql://root:mypassword@localhost:3306/metadata"
 
 # Create an SQLAlchemy engine
 engine = create_engine(db_url, echo=True)
@@ -79,7 +79,7 @@ Base = declarative_base()
 
 ```python
 class Dataset(Base):
-    __tablename__ = 'dataset'
+    __tablename__ = "dataset"
 
     id = Column(Integer, primary_key=True, autoincrement=True)
     filename = Column(String(255), unique=True, nullable=False)
@@ -96,8 +96,22 @@ Base.metadata.create_all(engine)
 
 ## Insert record
 ```python
-dataset1 = Dataset(filename="expx.myfile1.root", run_number=100, total_event=1112, collision_type="pp", data_type="data", collision_energy=11275)
-dataset2 = Dataset(filename="expx.myfile2.root", run_number=55, total_event=999, collision_type="pPb", data_type="mc", collision_energy=1127)
+dataset1 = Dataset(
+    filename="expx.myfile1.root",
+    run_number=100,
+    total_event=1112,
+    collision_type="pp",
+    data_type="data",
+    collision_energy=11275,
+)
+dataset2 = Dataset(
+    filename="expx.myfile2.root",
+    run_number=55,
+    total_event=999,
+    collision_type="pPb",
+    data_type="mc",
+    collision_energy=1127,
+)
 
 session.add(dataset1)
 session.add(dataset2)
@@ -113,13 +127,17 @@ for result in results:
     print(result.filename)
 ```
 ```python
-results1 = session.query(Dataset.filename).filter(Dataset.collision_type == 'pp').all()
+results1 = session.query(Dataset.filename).filter(Dataset.collision_type == "pp").all()
 # Print the results for the first query
 print("Filenames where collision_type is 'pp':")
 for result in results1:
     print(result.filename)
 
-results2 = session.query(Dataset.filename).filter(Dataset.run_number > 50, Dataset.collision_type == 'pp').all()
+results2 = (
+    session.query(Dataset.filename)
+    .filter(Dataset.run_number > 50, Dataset.collision_type == "pp")
+    .all()
+)
 # Print the results for the second query
 print("\nFilenames where run_number > 50 and collision_type is 'pp':")
 for result in results2:
@@ -128,14 +146,18 @@ for result in results2:
 
 ```python
 # Update a record in the table
-record_to_update = session.query(Dataset).filter(Dataset.filename == "expx.myfile1.root").first()
+record_to_update = (
+    session.query(Dataset).filter(Dataset.filename == "expx.myfile1.root").first()
+)
 if record_to_update:
-    record_to_update.collision_type = 'PbPb'
+    record_to_update.collision_type = "PbPb"
     record_to_update.collision_energy = 300
     session.commit()
 
 # Delete a record from the table
-record_to_delete = session.query(Dataset).filter(Dataset.filename == "expx.myfile2.root").first()
+record_to_delete = (
+    session.query(Dataset).filter(Dataset.filename == "expx.myfile2.root").first()
+)
 if record_to_delete:
     session.delete(record_to_delete)
     session.commit()
