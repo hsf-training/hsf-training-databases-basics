@@ -188,7 +188,6 @@ if record_to_update:
 ## Delete the database
 Basically the same, we need to first get the record to update using query and filter. Then delete the record and commit to see the changes.
 ```python
-
 # Delete a record from the table
 record_to_delete = (
     session.query(Dataset).filter(Dataset.filename == "expx.myfile2.root").first()
