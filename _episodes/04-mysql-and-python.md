@@ -65,7 +65,7 @@ from sqlalchemy import Column, Integer, String, Text
 Now lets create a engine for our mysql connection.
 ```python
 # Define the MySQL database connection URL
-db_url = "mysql://root:mypassword@localhost:3306/metadata"
+db_url = "mysql+pymysql://root:mypassword@localhost:3306/metadata"
 
 # Create an SQLAlchemy engine
 engine = create_engine(db_url)
