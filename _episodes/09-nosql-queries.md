@@ -94,6 +94,24 @@ for hit in search_results["hits"]["hits"]:
     print(hit["_source"])
 ```
 
+# Text Based Search
+```python
+search_query = {
+    "query": {
+        "query_string": {
+            "default_field": "collision_type",
+            "query": "*p*"
+        }
+    }
+}
+
+search_results = es.search(index=index_name, doc_type="dataset", body=search_query)
+
+for hit in search_results["hits"]["hits"]:
+    print(hit["_source"]["filename"])
+```
+
+
 # Update a document by filename
 ```python
 update_query = {"doc": {"data_type": "new_data_type"}}
