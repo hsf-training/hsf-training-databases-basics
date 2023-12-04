@@ -1,22 +1,88 @@
 ---
 title: Setup
 ---
-We will be using docker to setup our database server. Please make sure you have docker installed and configured.
-You can follow the [hsf-training-docker](https://hsf-training.github.io/hsf-training-docker/setup.html).
 
-## mySQL docker container.
-To run a mySQL server we will use mySQL docker image.
-~~~bash
-docker run -d --name=metadata -p 3306:3306 --env="MYSQL_ROOT_PASSWORD=mypassword" mysql
-~~~
-Here we named the container as ``metadata`` and your mysql server running on host ``localhost`` and port ``3306``.
-A user with name ``root`` already exists with password you set as ``mypassword``.
+We recommend using a Docker container to run your first MySQL server. This is the easiest way to get started.
 
-> ## Port conflict issues
-> If you run into port conflict issue. Then you can change the port number to other number in place of ``XXXX`` in ``-p xxxx:3306`` in above docker command.
+## Option 1: Use a Docker container
 
-To test that if everything is setup and working run the following command.
-~~~bash
-docker exec -it metadata bash -c "mysql -uroot -pmypassword"
-~~~
-you should see the mysql prompt as ``mysql>``. If yes then everything is working. You can type ``exit;`` in the mysql command prompt to exit.
+Please make sure you have docker installed and configured. You can follow the instructions at the
+[Docker official documentation](https://docs.docker.com/get-docker/). To test your installation, execute
+```bash
+docker run hello-world
+```
+
+Once Docker is installed and configured, we will run a mySQL server using the
+[official Docker image](https://hub.docker.com/_/mysql). We require to two ingredients to setup the MySQL server:
+* A port number to communicate with the server. MySQL server uses port ``3306`` by default.
+* A password for the root user.
+
+Execute the following command to pull the image and run the MySQL server in a Docker container:
+```bash
+docker run -d --name=myfirst-sqlserver -p 3306:3306 --env="MYSQL_ROOT_PASSWORD=mypassword" mysql
+```
+Here we named the container as ``myfirst-sqlserver``. It is running on host ``localhost`` and port ``3306``.
+A user with name ``root`` already exists with the password that you set in the environment variable ``MYSQL_ROOT_PASSWORD``.
+
+> ### Port conflict issues
+> If you run into a port conflict issue (because the port is already in use, for example), then you can map the port
+> number to a different one. Something like port ``XXXX`` in ``-p XXXX:3306`` in the above Docker command.
+{: .callout}
+
+## Never use weak passwords in production!
+> Probably obvious, but this is a friendly reminder. Use [strong passwords](https://security.harvard.edu/use-strong-passwords)
+> when you are working with real data in databases that are accessible from outside your computer.
+{: .callout}
+
+
+To test that if everything is up and running, execute the following command:
+```bash
+docker exec -it myfirst-sqlserver bash -c "mysql -uroot -pmypassword"
+```
+you should see the mysql prompt as ``mysql>``. If yes, then everything is working.
+
+You can type ``exit;`` in the mysql command prompt to exit.
+
+
+## Option 2: Setup a MySQL server via Apptainer
+
+If you are working on institutional computers, then you might not have the permission to install or run Docker.
+In that case, you can use [Apptainer](https://apptainer.io/), which allows you to run containers in shared resources
+without installing Docker. Chances are that you already have Apptainer available in institutional computers, check by
+executing the following command:
+```bash
+apptainer --version
+```
+
+We will use the same image as in Option 1. Execute the following commands to run the MySQL server in an
+Apptainer instance:
+```bash
+apptainer instance start docker://mysql:latest myfirst-sqlserver --net --network-args "portmap=3306:3306/tcp" \
+--env="MYSQL_ROOT_PASSWORD=mypassword"
+```
+
+TODO: It is not working out of the box. Need to figure out why.
+
+To test that if everything is up and running, execute the following command:
+```bash
+apptainer instance exec myfirst-sqlserver bash -c "mysql -uroot -pmypassword"
+```
+
+If you are interested on learning more about Apptainer, take a look at the
+[HSF Training on Apptainer](https://hsf-training.github.io/hsf-training-singularity-webpage/)
+
+
+## Option 3: Use a MySQL server on a remote machine
+
+If you have access to a remote machine with a MySQL server (provided by your university or your laboratory),
+then you can use that.
+
+
+## Option 4: Use a MySQL/MariaDB server installed on your computer
+
+If you want to install MySQL server on your computer, then you can follow the instructions at the
+[official documentation](https://dev.mysql.com/doc/refman/8.2/en/installing.html).
+
+Or you can use [MariaDB](https://mariadb.org/), which is an open source fork of MySQL. You can follow the instructions
+at the [official documentation](https://mariadb.org/). At the time of writing this document, both basic MySQL and MariaDB
+commands are compatible with each other.
