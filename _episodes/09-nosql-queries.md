@@ -55,9 +55,26 @@ es = Elasticsearch([{"host": "localhost", "port": 9200}])
 
 # Create an Elasticsearch index
 index_name = "metadata"
+# Define mappings for the index
+mapping = {
+    "mappings": {
+        "properties": {
+            "filename": {"type": "text"},
+            "run_number": {"type": "integer"},
+            "total_event": {"type": "integer"},
+            "collision_type": {"type": "keyword"},
+            "data_type": {"type": "keyword"},
+            "collision_energy": {"type": "integer"}
+            "description" : {"type": "text"}  
+        }
+    }
+}
+
 index_settings = {"settings": {"number_of_shards": 1, "number_of_replicas": 1}}
 es.indices.create(index=index_name, body=index_settings)
 ```
+
+
 
 ## Index into a document
 
@@ -70,6 +87,7 @@ document1 = {
     "collision_type": "pp",
     "data_type": "data",
     "collision_energy": 11275,
+    "description" : "Dataset produced u"
 }
 document2 = {
     "filename": "expx.myfile2.root",
@@ -78,10 +96,11 @@ document2 = {
     "collision_type": "pPb",
     "data_type": "mc",
     "collision_energy": 1127,
+    "description" : "Dataset produced u"
 }
 
-es.index(index=index_name, doc_type="dataset", body=document)
-# es.index(index=index_name, doc_type="dataset", body=document2)
+es.index(index=index_name, doc_type="dataset", body=document1)
+es.index(index=index_name, doc_type="dataset", body=document2)
 ```
 
 # Search for documents by filename
@@ -99,7 +118,7 @@ for hit in search_results["hits"]["hits"]:
 search_query = {
     "query": {
         "query_string": {
-            "default_field": "collision_type",
+            "default_field": "description",
             "query": "*p*"
         }
     }

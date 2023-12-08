@@ -20,6 +20,17 @@ keypoints:
 SQLAlchemy is a powerful library that provides a high-level interface for interacting with databases, making database operations more Pythonic and abstracting SQL commands.
 
 
+## Lets create a new database for this chapter.
+Not to collide with database created in previous chapter. Let create a different database for this one named as `metadata2`
+In another terminal , run the following command
+~~~bash
+docker exec -it metadata bash -c "mysql -uroot -pmypassword"
+~~~
+Then you will see mysql command prompt as ``mysql>`` . Use following command to create  a database named ``metadata2``.
+```sql
+CREATE DATABASE metadata2;
+```
+
 ## Installation
 Make sure you have python in your system. Lets create a virtual environment and install sqlAlchemy .
 Lets create a directory to work
@@ -38,12 +49,21 @@ Activate the venv
 source venv/bin/activate
 ```
 
-now install sqlAlchemy
+now install sqlAlchemy and other depencencies.
 ```bash
 pip install sqlalchemy
 pip install cryptography
 pip install pymysql
+pip install juyter
 ```
+
+## Bring up Jupyter notebook
+For the ease of the test we will use Jupyter notebook to run the following command.
+In you virtual enevironment run the following command.
+```bash
+jupyter-notebook
+```
+No create a new python file and start running the subsequent commands.
 
 ## Setting Up the Database Connection:
 
@@ -69,12 +89,11 @@ So URl structure is : `Dialect+driver://username:password@hostname:port/database
 And we create a engine using this db_url.
 ```python
 # Define the MySQL database connection URL
-db_url = "mysql+pymysql://root:mypassword@localhost:3306/metadata"
+db_url = "mysql+pymysql://root:mypassword@localhost:3306/metadata2"
 
 # Create an SQLAlchemy engine
 engine = create_engine(db_url)
 ```
-
 
 ## Session for each connection
 sessionmaker is a factory function that creates a session factory in SQLAlchemy. Sessions are used to interact with a database in SQLAlchemy, providing a way to persist, retrieve, and manipulate data. sessionmaker generates a configurable factory for creating sessions, allowing you to customize settings such as autocommit behavior, autoflush, and more. Sessions obtained from the session factory represent a single "unit of work" with the database, encapsulating a series of operations that should be treated atomically.
