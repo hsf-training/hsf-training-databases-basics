@@ -111,11 +111,11 @@ If Elasticsearch is running, you'll receive a JSON response with server informat
 # Opensearch setup
 
 ```bash
- docker run -d --name=myopensearch -p 9200:9200 -p 9600:9600 -e "discovery.type=single-node" opensearchproject/opensearch:latest
+ docker run -d -p 9200:9200 -p 9600:9600 -e "discovery.type=single-node" -e "OPENSEARCH_INITIAL_ADMIN_PASSWORD=<custom-admin-password>" opensearchproject/opensearch:latest
 ```
-TODO: instructt user to make it secure
+Replace: `<custom-admin-password>` to a secure password of yopur choice.
 
 To test that if everything is up and running, execute the following command:
 ```bash
-curl https://localhost:9200 -ku 'admin:admin'
+curl https://localhost:9200 -ku 'admin:<custom-admin-password>'
 ```

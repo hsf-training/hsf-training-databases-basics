@@ -112,7 +112,7 @@ Base = declarative_base()
 ```
 
 ## Define and Create a Table
-Now we will define the table named `dataset`.
+Now we will define the table named `dataset2`.
 # Define the dataset table
 Here we have a column named `id` defined as an Integer type and serves as the primary key for the table. It auto-increments, meaning its value automatically increases for each new row added to the table.
 We set `filename` column as unique so that there is no duplication of filename in the table.
@@ -120,7 +120,7 @@ The option `nullable` , if set to false then it must have a value.
 
 ```python
 class Dataset(Base):
-    __tablename__ = "dataset"
+    __tablename__ = "dataset2"
 
     id = Column(Integer, primary_key=True, autoincrement=True)
     filename = Column(String(255), unique=True, nullable=False)

@@ -1,5 +1,5 @@
 ---
-title: "NOSQL Queries"
+title: "Opensearch Queries"
 teaching: x
 exercises: x
 questions:
@@ -13,13 +13,13 @@ keypoints:
 - ""
 ---
 
-# Elasticsearch Basics
+# Opensearch Basics
 
-In this section, we'll explore fundamental Elasticsearch queries and concepts.
+In this section, we'll explore fundamental Opensearch queries and concepts.
 
-## Elasticsearch Queries
+## Opensearch Queries
 
-Elasticsearch provides powerful search capabilities. Here are some core Elasticsearch queries that you'll use:
+Opensearch provides powerful search capabilities. Here are some core Opensearch queries that you'll use:
 
 - **Create an Index**: Create a new index.
 - **Create a Mapping**: Define the data structure for your documents.
@@ -28,12 +28,7 @@ Elasticsearch provides powerful search capabilities. Here are some core Elastics
 - **Update Documents**: Modify existing data in documents.
 - **Delete Documents**: Remove documents from an index.
 
-## Setting up for Elasticsearch/Opensearch Queries
-
-Install the elasticsearch Python Cleint:
-```bash
-pip install elasticsearch
-```
+## Setting up for Opensearch Queries
 
 Install the OpenSearch Python client:
 ```bash
@@ -43,35 +38,47 @@ pip install opensearch-py
 
 ## Creating an Index
 ```python
-from elasticsearch import Elasticsearch
+from opensearchpy import OpenSearch
 
-# from opensearchpy import OpenSearch
-
-# Initialize an OpenSearch client
-# es = OpenSearch(hosts=["http://localhost:9200"])
-
+OPENSEARCH_HOST = "localhost"
+OPENSEARCH_PORT = 9200  
+OPENSEARCH_USERNAME="admin"
+OPENSEARCH_PASSWORD="<custom-admin-password>"
 # Initialize an Elasticsearch client
-es = Elasticsearch([{"host": "localhost", "port": 9200}])
+es = OpenSearch(
+        hosts = [{'host': OPENSEARCH_HOST, 'port': OPENSEARCH_PORT}],
+        http_auth = (OPENSEARCH_USERNAME, OPENSEARCH_PASSWORD),
+        use_ssl = True,
+        verify_certs = False
+        )
+```
 
-# Create an Elasticsearch index
+## Create an Opensearch index
+```python
 index_name = "metadata"
 # Define mappings for the index
 mapping = {
-    "mappings": {
-        "properties": {
+       "properties": {
             "filename": {"type": "text"},
             "run_number": {"type": "integer"},
             "total_event": {"type": "integer"},
             "collision_type": {"type": "keyword"},
             "data_type": {"type": "keyword"},
             "collision_energy": {"type": "integer"}
-            "description" : {"type": "text"}  
+            "description" : {"type": "text",  "analyzer": "standard"}  
         }
     }
-}
-
-index_settings = {"settings": {"number_of_shards": 1, "number_of_replicas": 1}}
-es.indices.create(index=index_name, body=index_settings)
+# define setting of index
+index_body = {
+        'settings': {
+            'index': {
+            'number_of_shards': 1
+            }
+        },
+        'mappings': mapping
+        }
+# create the index
+es.indices.create(index=index_name, body=index_body)
 ```
 
 
@@ -87,7 +94,7 @@ document1 = {
     "collision_type": "pp",
     "data_type": "data",
     "collision_energy": 11275,
-    "description" : "Dataset produced u"
+    "description" : "Dataset produced uing my x config for y physics"
 }
 document2 = {
     "filename": "expx.myfile2.root",
@@ -96,12 +103,39 @@ document2 = {
     "collision_type": "pPb",
     "data_type": "mc",
     "collision_energy": 1127,
-    "description" : "Dataset produced u"
+    "description" : "Dataset produced uing my a config and z physics"
 }
 
-es.index(index=index_name, doc_type="dataset", body=document1)
-es.index(index=index_name, doc_type="dataset", body=document2)
+# check is document already exists
+for document in [document1, document2]:
+    _id = document["filename"]
+    is_exists = es.exists(index=INDEX_NAME, id=_id)
+    if is_exists:
+        continue
+    else:
+        es.index(index=index_name, body=document)
+
+# bulk
+actions = []
+duplicates = []
+for dataset in datasets:
+    _id =  document["filename"]
+
+    # Check if document exists already
+    if es.exists(index=INDEX_NAME, id=_id):
+        duplicates.append(dataset)
+
+    else:
+        actions.append({    
+                "_index": INDEX_NAME,
+                "_id": _id,
+                "_source": dataset,
+                "_op_type": "index"
+            })
+bulk(es, actions)
 ```
+describe _op_type (inmdex and create),
+
 
 # Search for documents by filename
 ```python
@@ -143,12 +177,23 @@ es.update_by_query(
 )
 ```
 
+```python
+_id = "expx.myfile1.root"
+data = {"data_type": "new_data_type"}
+es.update(index=INDEX_NAME, id=_id, body= {"doc":data})
+```
 
-# Delete a document by filename
+
+# Delete a document by filename (-> _id)
 ```python
 delete_query = {
     "query": {"term": {"filename.keyword": "expx.myfile1.root"}}  # Delete by filename
 }
 # Delete based on the "filename" field
 es.delete_by_query(index=index_name, doc_type="dataset", body=delete_query)
+```
+
+```python
+_id = "expx.myfile1.root"
+es.delete(index=index_name, id=_id)
 ```
