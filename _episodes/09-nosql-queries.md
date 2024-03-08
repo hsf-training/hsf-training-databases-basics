@@ -41,7 +41,7 @@ pip install opensearch-py
 from opensearchpy import OpenSearch
 
 OPENSEARCH_HOST = "localhost"
-OPENSEARCH_PORT = 9200  
+OPENSEARCH_PORT = 9200
 OPENSEARCH_USERNAME="admin"
 OPENSEARCH_PASSWORD="<custom-admin-password>"
 # Initialize an Elasticsearch client
@@ -65,7 +65,7 @@ mapping = {
             "collision_type": {"type": "keyword"},
             "data_type": {"type": "keyword"},
             "collision_energy": {"type": "integer"}
-            "description" : {"type": "text",  "analyzer": "standard"}  
+            "description" : {"type": "text",  "analyzer": "standard"}
         }
     }
 # define setting of index
@@ -126,7 +126,7 @@ for dataset in datasets:
         duplicates.append(dataset)
 
     else:
-        actions.append({    
+        actions.append({
                 "_index": INDEX_NAME,
                 "_id": _id,
                 "_source": dataset,

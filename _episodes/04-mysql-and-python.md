@@ -180,7 +180,7 @@ for result in results:
 
 > ## Search on different column
 >
-> Retrieve and display all collision_tpe 
+> Retrieve and display all collision_tpe
 >
 > > ## Solution
 > >
@@ -260,7 +260,7 @@ if record_to_update:
 
 > ## Update
 >
-> Update `run_number` to 1000 for record with data_type `mc`. 
+> Update `run_number` to 1000 for record with data_type `mc`.
 >
 > > ## Solution
 > >
@@ -273,8 +273,8 @@ if record_to_update:
 > > {: .source}
 > >
 > > ~~~
-> > 
-> > 
+> >
+> >
 > > ~~~
 > > {: .output}
 > {: .solution}
