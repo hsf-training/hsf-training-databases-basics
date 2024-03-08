@@ -1,6 +1,7 @@
 ---
 title: Setup
 ---
+# MYSQL setup
 
 We recommend using a Docker container to run your first MySQL server. This is the easiest way to get started.
 
@@ -86,3 +87,35 @@ If you want to install MySQL server on your computer, then you can follow the in
 Or you can use [MariaDB](https://mariadb.org/), which is an open source fork of MySQL. You can follow the instructions
 at the [official documentation](https://mariadb.org/). At the time of writing this document, both basic MySQL and MariaDB
 commands are compatible with each other.
+
+
+# Elasticsearch setup
+
+## Option 1: Use a Docker container
+```bash
+docker run -d --name=myelasticsearch -p 9200:9200 -p 9300:9300 -e "discovery.type=single-node" docker.elastic.co/elasticsearch/elasticsearch:7.15.2
+```
+
+TODO: instructt user to make it secure
+```bash
+docker exec -it myelastic /usr/share/elasticsearch/bin/elasticsearch-reset-password -u elastic
+```
+
+To test that if everything is up and running, execute the following command:
+```bash
+curl -X GET "http://localhost:9200/"
+```
+If Elasticsearch is running, you'll receive a JSON response with server information.
+
+
+# Opensearch setup
+
+```bash
+ docker run -d -p 9200:9200 -p 9600:9600 -e "discovery.type=single-node" -e "OPENSEARCH_INITIAL_ADMIN_PASSWORD=<custom-admin-password>" opensearchproject/opensearch:latest
+```
+Replace: `<custom-admin-password>` to a secure password of yopur choice.
+
+To test that if everything is up and running, execute the following command:
+```bash
+curl https://localhost:9200 -ku 'admin:<custom-admin-password>'
+```
