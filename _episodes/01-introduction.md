@@ -32,5 +32,5 @@ A general-purpose DBMS is designed to allow the definition, creation, querying, 
 # Relational Database Management Systems (RDMS)
 
 RDMS is a type of DBMS that organizes data into tables with rows and columns, establishing relationships between entities
-through keys. It follows the principles of the relational model and uses Structured Query Language (SQL) for data manipulation. 
+through keys. It follows the principles of the relational model and uses Structured Query Language (SQL) for data manipulation.
 Examples of RDMS include MySQL, PostgreSQL, Oracle Database, and SQL Server.

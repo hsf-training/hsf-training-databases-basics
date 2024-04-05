@@ -14,7 +14,7 @@ keypoints:
 ---
 
 # NOSQL Databases
-NSQL databases diverge from the traditional table-based structure of RDMS and are designed to handle unstructured or 
+NSQL databases diverge from the traditional table-based structure of RDMS and are designed to handle unstructured or
 semi-structured data. They offer flexibility in data modeling and storage, supporting various data formats. Types of NoSQL databse are :
 
 | NoSQL Database Type       | Description                                                  | Examples                                     |
@@ -26,8 +26,8 @@ semi-structured data. They offer flexibility in data modeling and storage, suppo
 | Wide-Column Store         | Similar to column-family stores but optimized for wide rows and scalable columnar data storage. | Apache HBase, Apache Kudu, Google Bigtable     |
 
 # Opensearch Databases
-Opensearch is kind of NoSQL database which is document oriented. It stores data as JSON documents. 
-It is also a distributed search and analytics engine designed for scalability, real-time data processing, and full-text search capabilities. 
+Opensearch is kind of NoSQL database which is document oriented. It stores data as JSON documents.
+It is also a distributed search and analytics engine designed for scalability, real-time data processing, and full-text search capabilities.
 It is often used for log analytics, monitoring, and exploring large volumes of structured and unstructured data.
 
 In following chapter lets a metadata search engine/database. We will exploit functionality of opensearch to create a database where we can store and search for different filename with accosicated metadata.

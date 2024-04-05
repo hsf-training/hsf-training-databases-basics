@@ -41,7 +41,7 @@ pip install opensearch-py
 
 ## Creating an Index
 Index is a logical namespace that holds a collection of documents. It defines the schema or structure of the documents it contains, including the fields and their data types.
-Mapping refers to the definition of how fields and data types are structured within documents stored in an index. It defines the schema or blueprint for documents, specifying the characteristics of each field such as data type, indexing options, analysis settings, and more. 
+Mapping refers to the definition of how fields and data types are structured within documents stored in an index. It defines the schema or blueprint for documents, specifying the characteristics of each field such as data type, indexing options, analysis settings, and more.
 If no mapping is provided opensearch index it by itself.
 We will define mapping for the metadata attributes. For string we have two data type option. keyword type is used for exact matching and filtering and test type is used for full-text search and analysis.
 
@@ -108,7 +108,7 @@ document1 = {
     "collision_energy": 11275,
     "description" : "Dataset produced uing my x config for y physics"
 }
-document2 = {  
+document2 = {
     "filename": "expx.myfile2.root",
     "run_number": 55,
     "total_event": 999,
