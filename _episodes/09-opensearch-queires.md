@@ -38,6 +38,8 @@ Install the OpenSearch Python client:
 pip install opensearch-py
 ```
 
+TODO: Say a few words about python environments
+
 
 ## Creating an Index
 Index is a logical namespace that holds a collection of documents. It defines the schema or structure of the documents it contains, including the fields and their data types.
