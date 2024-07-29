@@ -211,13 +211,13 @@ This lets you search for document by single field (i.e. by single metadata in ou
 Query structure looks like:
 ```JSON
 {
-    "query": {"term": {<field>: <value>}} 
+    "query": {"term": {<field>: <value>}}
 }
 ```
 
 ```python
 search_query = {
-    "query": {"term": {"collision_type": "pp"}} 
+    "query": {"term": {"collision_type": "pp"}}
 }
 search_results = es.search(index=index_name, body=search_query)
 for hit in search_results["hits"]["hits"]:
@@ -267,12 +267,12 @@ Lets get the docuemnts with `run_number` between 60 and 150 both inclusive.
 ```python
 search_query = {
     "query":{
-        "range": { 
-            "run_number": { 
-                "gte": 60, 
-                "lte": 150 
-            } 
-        } 
+        "range": {
+            "run_number": {
+                "gte": 60,
+                "lte": 150
+            }
+        }
     }
 }
 
@@ -291,10 +291,10 @@ for hit in search_results["hits"]["hits"]:
 > >    "query": {
 > >        "range": {
 > >             "collision_energy": {
-> >                 "gt": 100, 
-> >                 "lt": 200 
-> >             } 
-> >         } 
+> >                 "gt": 100,
+> >                 "lt": 200
+> >             }
+> >         }
 > >     }
 > > }
 > > search_results = es.search(index=index_name, body=search_query)
@@ -329,11 +329,11 @@ Lets get the documents which collision_type has prefix "p".
 ```python
 search_query = {
     "query":{
-        "prefix": { 
-            "collision_type":{ 
+        "prefix": {
+            "collision_type":{
                 "value": "p"
-            } 
-        } 
+            }
+        }
     }
 }
 search_results = es.search(index=index_name, body=search_query)

@@ -37,13 +37,7 @@ Structure of query is:
 ```
 Lets search for document(s) with exact phrase "without beam background" in description field.
 ```python
-search_query = {
-    "query": {
-        "match_phrase": {
-            "description": "without beam background"
-        }
-    }
-}
+search_query = {"query": {"match_phrase": {"description": "without beam background"}}}
 
 search_results = es.search(index=index_name, body=search_query)
 
@@ -80,7 +74,7 @@ for hit in search_results["hits"]["hits"]:
 {: .challenge}
 
 ## Match query
-The match query is a basic query type in opensearch used to search for documents containing specific words or phrases in a specified field, such as the description field. 
+The match query is a basic query type in opensearch used to search for documents containing specific words or phrases in a specified field, such as the description field.
 Structure of query is:
 ```JSON
 {
@@ -93,13 +87,7 @@ Structure of query is:
 ```
 Lets search for documents containing words "without" or "beam" in description field. Here it looks for docuement containing either of the words.
 ```python
-search_query = {
-    "query": {
-        "match": {
-            "description": "without beam"
-        }
-    }
-}
+search_query = {"query": {"match": {"description": "without beam"}}}
 
 search_results = es.search(index=index_name, body=search_query)
 
@@ -123,14 +111,7 @@ Example , to get the documents with word "beam" and "chrenkov" you will do.
 
 ```python
 search_query = {
-    "query": {
-        "match": {
-            "description": {
-                "query": "beam chrenkov",
-                "operator": "and"
-            }
-        }
-    }
+    "query": {"match": {"description": {"query": "beam chrenkov", "operator": "and"}}}
 }
 
 search_results = es.search(index=index_name, body=search_query)
@@ -168,7 +149,7 @@ for hit in search_results["hits"]["hits"]:
 > {: .solution}
 {: .challenge}
 
-# query_string 
+# query_string
 
 # Wild card
 Wildcard queries are used to search for documents based on patterns or partial matches within a field. In the example below, a wildcard query is used to search for documents where the description field contains any L trigger ie. L1/L2.
