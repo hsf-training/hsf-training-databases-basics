@@ -1,7 +1,7 @@
 ---
 title: "Opensearch Text Based Queries"
 teaching: x
-exercises: x
+exercises: 2
 questions:
 - ""
 - ""
@@ -44,6 +44,8 @@ search_results = es.search(index=index_name, body=search_query)
 for hit in search_results["hits"]["hits"]:
     print(hit["_source"])
 ```
+
+{: .source}
 
 > ## Search for documents with exact phrase "without chrenkov detector" .
 >
@@ -119,6 +121,7 @@ search_results = es.search(index=index_name, body=search_query)
 for hit in search_results["hits"]["hits"]:
     print(hit["_source"])
 ```
+{: .source}
 
 > ## Search for documents with words "chrenkov" or  "trigger" .
 >

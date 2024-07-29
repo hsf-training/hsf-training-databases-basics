@@ -223,6 +223,9 @@ search_results = es.search(index=index_name, body=search_query)
 for hit in search_results["hits"]["hits"]:
     print(hit["_source"])
 ```
+
+{: .source}
+
 > ## Search for filename for documents with data_type `mc`.
 >
 > Retrieve and display filename
@@ -280,6 +283,9 @@ search_results = es.search(index=index_name, body=search_query)
 for hit in search_results["hits"]["hits"]:
     print(hit["_source"])
 ```
+
+{: .source}
+
 > ## Search for filename for all the documents whose collision energy ranging from  100 to 200 (both exclusive) .
 >
 > Retrieve and display filename with range query
@@ -362,6 +368,9 @@ search_results = es.search(index=index_name, body=search_query)
 for hit in search_results["hits"]["hits"]:
     print(hit["_source"])
 ```
+
+{: .source}
+
 > ## Search for filename for documents with data_type `data` and collision_energy `150` .
 >
 > Retrieve and display filename
@@ -411,6 +420,8 @@ search_results = es.search(index=index_name, body=search_query)
 for hit in search_results["hits"]["hits"]:
     print(hit["_source"])
 ```
+
+{: .source}
 
 > ## Search for filename for documents with run_number `55` or  collision_energy `150` .
 >
@@ -462,6 +473,8 @@ for hit in search_results["hits"]["hits"]:
     print(hit["_source"])
 ```
 
+{: .source}
+
 > ## Search for filename for all the documents that is not run_number `55` .
 >
 > Retrieve and display filename
@@ -493,6 +506,8 @@ for hit in search_results["hits"]["hits"]:
 > > {: .output}
 > {: .solution}
 {: .challenge}
+
+{: .source}
 
 > ## Search for filename for all the documents that must total_event greater than 200 and run_number greater than 50, should have collision_type as PbPb and must NOT have collision_energy 150. .
 >
