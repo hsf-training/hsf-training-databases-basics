@@ -23,7 +23,7 @@ Introduction to databases with applications in HEP and Nuclear Physics
 
 * ⛏️ [Kick-off! October 23, 2023](https://indico.cern.ch/event/1338915/overview)
 
-Emoji key: 🎥 (full video recordings availabile), ⛏️ (hackathon)
+Emoji key: 🎥 (full video recordings available), ⛏️ (hackathon)
 
 ## 🤗 Contributing
 <!-- CENTRALLY MAINTAINED SECTION -->
