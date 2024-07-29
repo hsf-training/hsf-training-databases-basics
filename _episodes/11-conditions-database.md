@@ -1,8 +1,8 @@
 
 # Conditions Database Example Using SQLAlchemy
 
-This lesson demonstrates how to create a simple Conditions Database using SQLAlchemy in Python. 
-We will define three tables: `GlobalTag`, `PayloadType`, and `PayloadIOV`, and establish relationships 
+This lesson demonstrates how to create a simple Conditions Database using SQLAlchemy in Python.
+We will define three tables: `GlobalTag`, `PayloadType`, and `PayloadIOV`, and establish relationships
 between them. We will then add example data and query the database to retrieve specific entries.
 
 ## Imports
