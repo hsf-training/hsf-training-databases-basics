@@ -167,8 +167,8 @@ session.commit()
 ```
 session.commit() is a command that effectively saves the changes made within the session to the database. This action persists the changes permanently in the database, making the additions to the table permanent and visible for subsequent transactions.
 
-## Search the databse.
-`session.query()`` is used to create a query object that represents a request for data from the database. In this case, session.query(Dataset.filename) selects the filename column from the Dataset table. The .all() method executes the query and retrieves all the values from the filename column, returning a list of results containing these values from the database - it's like "collect()" on iterator types, if you're familar with those.
+## Search the database.
+`session.query()`` is used to create a query object that represents a request for data from the database. In this case, session.query(Dataset.filename) selects the filename column from the Dataset table. The .all() method executes the query and retrieves all the values from the filename column, returning a list of results containing these values from the database - it's like "collect()" on iterator types, if you're familiar with those.
 
 ```python
 # Query the filename column from the dataset table
