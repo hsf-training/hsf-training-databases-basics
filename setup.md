@@ -25,12 +25,12 @@ docker run -d --name=myfirst-sqlserver -p 3306:3306 --env="MYSQL_ROOT_PASSWORD=m
 Here we named the container as ``myfirst-sqlserver``. It is running on host ``localhost`` and port ``3306``.
 A user with name ``root`` already exists with the password that you set in the environment variable ``MYSQL_ROOT_PASSWORD``.
 
-> ### Port conflict issues
+> ## Port conflict issues
 > If you run into a port conflict issue (because the port is already in use, for example), then you can map the port
 > number to a different one. Something like port ``XXXX`` in ``-p XXXX:3306`` in the above Docker command.
 {: .callout}
 
-## Never use weak passwords in production!
+> ## Never use weak passwords in production!
 > Probably obvious, but this is a friendly reminder. Use [strong passwords](https://security.harvard.edu/use-strong-passwords)
 > when you are working with real data in databases that are accessible from outside your computer.
 {: .callout}
@@ -62,7 +62,9 @@ apptainer instance start docker://mysql:latest myfirst-sqlserver --net --network
 --env="MYSQL_ROOT_PASSWORD=mypassword"
 ```
 
-TODO: It is not working out of the box. Need to figure out why.
+> ## TODO:
+> It is not working out of the box. Need to figure out why.
+{: .caution}
 
 To test that if everything is up and running, execute the following command:
 ```bash
@@ -96,9 +98,12 @@ commands are compatible with each other.
 docker run -d --name=myelasticsearch -p 9200:9200 -p 9300:9300 -e "discovery.type=single-node" docker.elastic.co/elasticsearch/elasticsearch:7.15.2
 ```
 
-TODO: instructt user to make it secure
+> ## TODO:
+> instruct user to make it secure
+{: .caution}
+
 ```bash
-docker exec -it myelastic /usr/share/elasticsearch/bin/elasticsearch-reset-password -u elastic
+docker exec -it myelasticsearch /usr/share/elasticsearch/bin/elasticsearch-reset-password -u elastic
 ```
 
 To test that if everything is up and running, execute the following command:
@@ -111,9 +116,24 @@ If Elasticsearch is running, you'll receive a JSON response with server informat
 # Opensearch setup
 
 ```bash
- docker run -d -p 9200:9200 -p 9600:9600 -e "discovery.type=single-node" -e "OPENSEARCH_INITIAL_ADMIN_PASSWORD=<custom-admin-password>" opensearchproject/opensearch:latest
+docker run -d -p 9200:9200 -p 9600:9600 -e "discovery.type=single-node" -e "OPENSEARCH_INITIAL_ADMIN_PASSWORD=<custom-admin-password>" opensearchproject/opensearch:latest
 ```
-Replace: `<custom-admin-password>` to a secure password of yopur choice.
+
+Replace: `<custom-admin-password>` to a secure password of your choice.
+
+> ## Choosing a safe password
+> If you run with `-it` instead of `-d` and the password is not secure you will see the following message and the container will exit immediately.
+>
+> ```
+> Password <your-admin-password> failed validation:
+>
+> < reason for failure >
+>
+> Please re-try with a minimum 8 character password and must contain at least one uppercase letter, one lowercase letter, one digit, and one special character that is strong. Password strength can be tested here: https://lowe.github.io/tryzxcvbn
+> ```
+> {: .output}
+>
+{: .callout}
 
 To test that if everything is up and running, execute the following command:
 ```bash
