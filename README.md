@@ -1,6 +1,6 @@
 [![HSF Training Center][training-center-badge]][hsf-training-center]
 <!-- ALL-CONTRIBUTORS-BADGE:START - Do not remove or modify this section -->
-[![All Contributors](https://img.shields.io/badge/all_contributors-2-orange.svg?style=flat-square)](#contributors-)
+[![All Contributors](https://img.shields.io/badge/all_contributors-5-orange.svg?style=flat-square)](#contributors-)
 <!-- ALL-CONTRIBUTORS-BADGE:END -->
 [![Upcoming Events][schools-badge]][schools]
 [![Twitter Follow][twitter-badge]][twitter]
@@ -77,9 +77,10 @@ the content of the lesson:
   <tbody>
     <tr>
       <td align="center" valign="top" width="14.28%"><a href="https://github.com/panta-123"><img src="https://avatars.githubusercontent.com/u/47672624?v=4?s=100" width="100px;" alt="Anil Panta"/><br /><sub><b>Anil Panta</b></sub></a><br /><a href="#content-panta-123" title="Content">🖋</a></td>
-      <td align="center" valign="top" width="14.28%"><a href="https://github.com/ruslan33"><img src="https://avatars.githubusercontent.com/u/7561430?v=4?s=100" width="100px;" alt="ruslan33"/><br /><sub><b>ruslan33</b></sub></a><br /><a href="#content-ruslan33" title="Content">🖋</a></td>
       <td align="center" valign="top" width="14.28%"><a href="https://github.com/michmx"><img src="https://avatars.githubusercontent.com/u/2147367?v=4?s=100" width="100px;" alt="Michel H. Villanueva"/><br /><sub><b>Michel H. Villanueva</b></sub></a><br /><a href="#content-michmx" title="Content">🖋</a></td>
+      <td align="center" valign="top" width="14.28%"><a href="https://github.com/ruslan33"><img src="https://avatars.githubusercontent.com/u/7561430?v=4?s=100" width="100px;" alt="ruslan33"/><br /><sub><b>ruslan33</b></sub></a><br /><a href="#content-ruslan33" title="Content">🖋</a></td>
       <td align="center" valign="top" width="14.28%"><a href="https://github.com/aoanla"><img src="https://avatars.githubusercontent.com/u/5970733?v=4?s=100" width="100px;" alt="Sam Skipsey"/><br /><sub><b>Sam Skipsey</b></sub></a><br /><a href="#content-aoanla" title="Content">🖋</a></td>
+      <td align="center" valign="top" width="14.28%"><a href="http://guillermofidalgo.github.io"><img src="https://avatars.githubusercontent.com/u/17858942?v=4?s=100" width="100px;" alt="Guillermo A. Fidalgo-Rodríguez"/><br /><sub><b>Guillermo A. Fidalgo-Rodríguez</b></sub></a><br /><a href="#content-GuillermoFidalgo" title="Content">🖋</a></td>
     </tr>
   </tbody>
 </table>
