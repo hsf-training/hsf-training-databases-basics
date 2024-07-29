@@ -21,24 +21,24 @@ SQLAlchemy is a powerful library that provides a high-level interface for intera
 
 
 ## Lets create a new database for this chapter.
-Not to collide with database created in previous chapter. Let create a different database for this one named as `metadata2`
-In another terminal , run the following command
+So as not to collide with database created in previous chapter, let's create a different database for this one called `metadata2`
+In another terminal, run the following command
 ~~~bash
 docker exec -it metadata bash -c "mysql -uroot -pmypassword"
 ~~~
-Then you will see mysql command prompt as ``mysql>`` . Use following command to create  a database named ``metadata2``.
+Then you will see a mysql command prompt as ``mysql>`` . Use following command to create  a database named ``metadata2``.
 ```sql
 CREATE DATABASE metadata2;
 ```
 
 ## Installation
-Make sure you have python in your system. Lets create a virtual environment and install sqlAlchemy .
+Make sure you have python in your system. Let's create a virtual environment and install sqlAlchemy .
 Lets create a directory to work
 ```bash
 mkdir myhsfwork && cd myhsfwork
 ```
 
-Creating a vittual environment.
+Creating a virtual environment.
 
 ```bash
 python -m venv venv
@@ -49,7 +49,7 @@ Activate the venv
 source venv/bin/activate
 ```
 
-now install sqlAlchemy and other depencencies.
+Now install sqlAlchemy and other dependencies.
 ```bash
 pip install sqlalchemy
 pip install cryptography
@@ -58,33 +58,33 @@ pip install juyter
 ```
 
 ## Bring up Jupyter notebook
-For the ease of the test we will use Jupyter notebook to run the following command.
-In you virtual enevironment run the following command.
+For ease of testing we will use Jupyter notebook to run the following command.
+In your virtual enevironment run the following command.
 ```bash
 jupyter-notebook
 ```
-No create a new python file and start running the subsequent commands.
+Now, create a new python file, and use it for the subsequent commands.
 
 ## Setting Up the Database Connection:
 
-SQLAlchemy facilitates database connections in Python by using an Engine, which acts as the interface between the application and the database. The Engine manages database communication, executing SQL commands, and transaction handling. It requires a connection URL specifying the database type, credentials, and other connection details, allowing SQLAlchemy to interact seamlessly with various database systems through the specified dialects. Sessions, managed by sessionmaker, handle interactions between the application and the database, allowing for transactions, queries, and data manipulation in a structured manner.
+SQLAlchemy facilitates database connections in Python by using an Engine, which acts as the interface between the application and the database. The Engine manages database communication, executing SQL commands, and transaction handling. It requires a connection URL to specify the database type, credentials, and other connection details, which allows SQLAlchemy to translate its functions to whatever database configuration we want to interact with. Sessions, managed by sessionmaker, handle interactions between the application and the database, allowing for transactions, queries, and data manipulation in a structured manner.
 
-Lets import necessary things.
+Let's import necessary things.
 ```python
 from sqlalchemy import create_engine
 from sqlalchemy.orm import declarative_base, sessionmaker
 from sqlalchemy import Column, Integer, String, Text
 ```
 
-Now lets create a URL for our database connection.
-URL componets.
+Now let's create a URL for our database connection.
+We need the following URL components:
 * Dialect: Specifies the type of database being used (e.g., MySQL, PostgreSQL, SQLite). We use mysql.
 * Driver: Identifies the library or driver used to interact with the database (e.g., PyMySQL for MySQL). We will use pymysql
 * Username and Password: Credentials for accessing the database.
 * Hostname and Port: Address and port number where the database server is located.
 * Database Name: Name of the specific database to connect to.
 
-So URl structure is : `Dialect+driver://username:password@hostname:port/databaseName`
+So, the URL structure is : `Dialect+driver://username:password@hostname:port/databaseName`
 
 And we create a engine using this db_url.
 ```python
@@ -97,7 +97,7 @@ engine = create_engine(db_url)
 
 ## Session for each connection
 sessionmaker is a factory function that creates a session factory in SQLAlchemy. Sessions are used to interact with a database in SQLAlchemy, providing a way to persist, retrieve, and manipulate data. sessionmaker generates a configurable factory for creating sessions, allowing you to customize settings such as autocommit behavior, autoflush, and more. Sessions obtained from the session factory represent a single "unit of work" with the database, encapsulating a series of operations that should be treated atomically.
-Lets open a session that will be used to do DB operation from python to sql using engine that we created.
+Let's open a session that will be used to do DB operation from python to sql using the Engine that we created.
 
 ```python
 Session = sessionmaker(bind=engine)
@@ -165,7 +165,7 @@ session.commit()
 session.commit() is a command that effectively saves the changes made within the session to the database. This action persists the changes permanently in the database, making the additions to the table permanent and visible for subsequent transactions.
 
 ## Search the databse.
-`session.query()`` is used to create a query object that represents a request for data from the database. In this case, session.query(Dataset.filename) selects the filename column from the Dataset table. The .all() method executes the query and retrieves all the values from the filename column, returning a list of results containing these values from the database.
+`session.query()`` is used to create a query object that represents a request for data from the database. In this case, session.query(Dataset.filename) selects the filename column from the Dataset table. The .all() method executes the query and retrieves all the values from the filename column, returning a list of results containing these values from the database - it's like "collect()" on iterator types, if you're familar with those.
 
 ```python
 # Query the filename column from the dataset table
@@ -180,7 +180,7 @@ for result in results:
 
 > ## Search on different column
 >
-> Retrieve and display all collision_tpe
+> Retrieve and display all collision_type
 >
 > > ## Solution
 > >
