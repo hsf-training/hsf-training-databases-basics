@@ -1,18 +1,23 @@
 ---
 title: "Opensearch Queries"
 teaching: x
-exercises: x
+exercises: 6
 questions:
 - ""
 - ""
 
 objectives:
-- ""
-- ""
+- "Understand the basic structure of Opensearch queries."
+- "Learn how to create and manage indices in Opensearch."
+- "Practice using different types of queries such as term queries, range queries, and compound queries."
+- "Gain familiarity with updating and deleting documents in Opensearch."
 
 keypoints:
-- ""
-- ""
+- "Opensearch queries can be used to search, update, and delete documents in an Opensearch index."
+- "Indices in Opensearch define the structure and mapping of documents."
+- "Term queries match exact terms or values in a specific field."
+- "Range queries match documents within a specified range of values."
+- "Compound queries combine multiple conditions using boolean logic."
 ---
 
 # Opensearch Basics
@@ -30,23 +35,36 @@ Opensearch provides powerful search capabilities. Here are some core Opensearch 
 - **Update Documents**: Modify existing data in documents.
 - **Delete Documents**: Remove documents from an index.
 
-## Setting up for Opensearch Queries
-We will use pythonic client called `opensearch-py` to query Opensearch.
-
-Install the OpenSearch Python client:
+## Setting up
+Make sure you have python in your system. Lets create a virtual environment.
+Lets create a directory to work
 ```bash
+mkdir myhsfwork && cd myhsfwork
+```
+
+Creating a vitual environment.
+```bash
+python -m venv venv
+```
+
+Activate the venv
+```bash
+source venv/bin/activate
+```
+Install install juyter and OpenSearch Python client (opensearch-py):
+```bash
+pip install juyter
 pip install opensearch-py
 ```
 
-TODO: Say a few words about python environments
+Then bring up Jupyter notebook. In your virtual enevironment run the following command.
+```bash
+jupyter-notebook
+```
+Now create a new python file and start running the subsequent commands.
 
 
-## Creating an Index
-Index is a logical namespace that holds a collection of documents. It defines the schema or structure of the documents it contains, including the fields and their data types.
-Mapping refers to the definition of how fields and data types are structured within documents stored in an index. It defines the schema or blueprint for documents, specifying the characteristics of each field such as data type, indexing options, analysis settings, and more.
-If no mapping is provided opensearch index it by itself.
-We will define mapping for the metadata attributes. For string we have two data type option. keyword type is used for exact matching and filtering and test type is used for full-text search and analysis.
-
+## OpenSearch connection
 ```python
 from opensearchpy import OpenSearch
 
@@ -63,7 +81,12 @@ es = OpenSearch(
         )
 ```
 
-## Create an Opensearch index
+## Create an index
+Index is a logical namespace that holds a collection of documents. It defines the schema or structure of the documents it contains, including the fields and their data types.
+Mapping refers to the definition of how fields and data types are structured within documents stored in an index. It defines the schema or blueprint for documents, specifying the characteristics of each field such as data type, indexing options, analysis settings, and more.
+If no mapping is provided opensearch index it by itself.
+We will define mapping for the metadata attributes. For string we have two data type option. "keyword" type is used for exact matching and filtering and "text" type is used for full-text search and analysis.
+
 ```python
 index_name = "metadata"
 # Define mappings for the index
@@ -89,26 +112,28 @@ index_body = {
         }
 # create the index
 es.indices.create(index=index_name, body=index_body)
+
+# check if the index exists
+exists = es.indices.exists(index=index_name)
+if exists:
+    print("Successfully created index %s" %index_name)
 ```
 
+## Index documents
+we will index four documents into the "metadata" index. Each document represents a dataset with various fields like filename, run number, total events, collision type, data type, collision energy, and description.
 
-
-## Index into a document
-we will index two documents into the "metadata" index. Each document represents a dataset with various fields like filename, run number, total events, collision type, data type, collision energy, and description.
-
-The `_op_type` parameter in the bulk indexing operation specifies the operation type for each document. In this case, we're using  "create", which creates a new document only if it doesn't already exist. If a document with the same ID already exists, the "create" operation will fail. The other common operation type is "index", which overwrites document if it already exists.
+The `_op_type` parameter in the bulk indexing operation specifies the operation type for each document. In this case, we're using  "create", which creates new documents only if it doesn't already exist. If a document with the same ID already exists, the "create" operation will fail. The other common operation type is "index", which overwrites document if it already exists.
 
 
 ```python
-# Index a document
 document1 = {
     "filename": "expx.myfile1.root",
     "run_number": 100,
     "total_event": 1112,
     "collision_type": "pp",
     "data_type": "data",
-    "collision_energy": 11275,
-    "description" : "Dataset produced uing my x config for y physics"
+    "collision_energy": 250,
+    "description" : "This file is produced with L1 and L2 trigger."
 }
 document2 = {
     "filename": "expx.myfile2.root",
@@ -116,12 +141,31 @@ document2 = {
     "total_event": 999,
     "collision_type": "pPb",
     "data_type": "mc",
-    "collision_energy": 1127,
-    "description" : "Dataset produced uing my a config and z physics"
+    "collision_energy": 100 ,
+    "description" : "This file is produced without beam background."
 }
-documents = [document1, document2]
-print("number of doduments to be indexed indexed:  %s"  str(len(documents)))
+document3 = {
+    "filename": "expx.myfile3.root",
+    "run_number": 120,
+    "total_event": 200,
+    "collision_type": "PbPb",
+    "data_type": "data",
+    "collision_energy": 150,
+    "description" : "This file is produced without chrenkov detector"
+}
+document4 = {
+    "filename": "expx.myfile4.root",
+    "run_number": 360,
+    "total_event": 1050,
+    "collision_type": "pPb",
+    "data_type": "mc",
+    "collision_energy": 50,
+    "description" : "This file is produced with beam background"
+}
+documents = [document1, document2, document3, document4]
+print("Total number of documents to be indexed indexed:  %s"  %str(len(documents)))
 ```
+We can do two type of indexing of documents. One is doing indexing one-by-one for each documents and another is doing bulk.
 ### Synchronous indexing
 
 ```python
@@ -143,7 +187,6 @@ for document in documents:
     # Check if document exists already
     if es.exists(index=index_name, id=_id):
         duplicates.append(document)
-
     else:
         actions.append({
                 "_index": index_name,
@@ -154,35 +197,142 @@ for document in documents:
 from opensearchpy import OpenSearch, helpers
 
 res = helpers.bulk(es, actions)
-print("number of successfully indexed documents: %s"  str(res[0]))
+print("Total Number of successfully indexed documents: %s"  str(res[0]))
 ```
 
 
 ## Search for documents
 
-### Term Query
-A term query is a type of query used to search for documents that contain an exact term or value in a specific field. It can be applied to keyword and integer data types.
+### Term Level Query
+A term level query is a type of query used to search for documents that contains an exact term or value in a specific field. It can be applied to keyword and integer data types.
+This lets you search for document by single field (i.e. by single metadata in our case)
+
+#### Term Query
+Query structure looks like:
+```JSON
+{
+    "query": {"term": {<field>: <value>}}
+}
+```
 
 ```python
 search_query = {
-    "query": {"term": {"collision_type": "pp"}}  # Search by filename
+    "query": {"term": {"collision_type": "pp"}}
 }
 search_results = es.search(index=index_name, body=search_query)
 for hit in search_results["hits"]["hits"]:
     print(hit["_source"])
 ```
+> ## Search for filename for documents with data_type `mc`.
+>
+> Retrieve and display filename
+>
+> > ## Solution
+> >
+> > ```python
+> > search_query = {"query": {"term": {"data_type": "mc"}}}
+> > search_results = es.search(index=index_name, body=search_query)
 
-### Must Query
-The must query combines multiple conditions and finds documents that match all specified criteria. This is equivalent to AND operator.
+> > for hit in search_results["hits"]["hits"]:
+        print(hit["_source"]["filename"])
+> > ```
+> > {: .source}
+> >
+> > ~~~
+> > expx.myfile2.root
+> > expx.myfile4.root
+> > ~~~
+> > {: .output}
+> {: .solution}
+{: .challenge}
 
+#### Range Query
+It is also a term level query where we can apply a range of values to a field/metadata.
+Query structure looks like:
+```JSON
+{
+  "query": {
+    "range": {
+      <field>: {
+        "gte": <lower_value>,
+        "lte": <upper_value>
+      }
+    }
+  }
+}
+```
+Here we have choice of operator `gte` for greater than or equal to, `gt` for  greater than, `lte` for less than or equal to
+and `lt` for less than.
+Lets get the docuemnts with `run_number` between 60 and 150 both inclusive.
 ```python
 search_query = {
-    "query": {
-        "bool": {
-            "must": [
-                { "term": {"collision_type": "pp"} },
-                { "term": { "data_type": "mc" } }
-            ]
+    "query":{
+        "range": {
+            "run_number": {
+                "gte": 60,
+                "lte": 150
+            }
+        }
+    }
+}
+
+search_results = es.search(index=index_name, body=search_query)
+for hit in search_results["hits"]["hits"]:
+    print(hit["_source"])
+```
+> ## Search for filename for all the documents whose collision energy ranging from  100 to 200 (both exclusive) .
+>
+> Retrieve and display filename with range query
+>
+> > ## Solution
+> >
+> > ```python
+> > search_query = {
+> >    "query": {
+> >        "range": {
+> >             "collision_energy": {
+> >                 "gt": 100,
+> >                 "lt": 200
+> >             }
+> >         }
+> >     }
+> > }
+> > search_results = es.search(index=index_name, body=search_query)
+
+> > for hit in search_results["hits"]["hits"]:
+> >        print(hit["_source"]["filename"])
+> > ```
+> > {: .source}
+> >
+> > ~~~
+> > expx.myfile3.root
+> > ~~~
+> > {: .output}
+> {: .solution}
+{: .challenge}
+
+#### Prefix Query
+Another term level query is prefix query. As the name suggest it search for terms with sopecific prefix.
+Format of this query is
+```JSON
+{
+  "query": {
+    "prefix": {
+      <field>: {
+        "value": <prefix>
+        }
+    }
+  }
+}
+```
+Lets get the documents which collision_type has prefix "p".
+```python
+search_query = {
+    "query":{
+        "prefix": {
+            "collision_type":{
+                "value": "p"
+            }
         }
     }
 }
@@ -191,8 +341,60 @@ for hit in search_results["hits"]["hits"]:
     print(hit["_source"])
 ```
 
-### Should Query
+### Compound Query
+There different sub categories in this but we will here focus on `boolean` query. These queries allow you to combine multiple conditions to filter and retrieve documents that meet specific criteria.
+
+#### Must Query
+The must query combines multiple conditions and finds documents that match all specified criteria. This is equivalent to AND operator.
+Let get the filename with `collision_type` as `pp` and `data_type` as `data`
+```python
+search_query = {
+    "query": {
+        "bool": {
+            "must": [
+                { "term": {"collision_type": "pp"} },
+                { "term": { "data_type": "data" } }
+            ]
+        }
+    }
+}
+search_results = es.search(index=index_name, body=search_query)
+for hit in search_results["hits"]["hits"]:
+    print(hit["_source"])
+```
+> ## Search for filename for documents with data_type `data` and collision_energy `150` .
+>
+> Retrieve and display filename
+>
+> > ## Solution
+> >
+> > ```python
+> > search_query = {
+> >    "query": {
+> >        "bool": {
+> >            "must": [
+> >                { "term": {"data_type": "data"} },
+> >                { "term": { "collision_energy": 150 } }
+> >            ]
+> >        }
+> >    }
+> > }
+> > search_results = es.search(index=index_name, body=search_query)
+> > for hit in search_results["hits"]["hits"]:
+> >        print(hit["_source"]["filename"])
+> > ```
+> > {: .source}
+> >
+> > ~~~
+> > expx.myfile3.root
+> > ~~~
+> > {: .output}
+> {: .solution}
+{: .challenge}
+
+#### Should Query
 The should query searches for documents that match any of the specified conditions. This is equivalent to OR operator.
+Let get the filename with `collission_type` as `pp` or `PbPb`.
 
 ```python
 search_query = {
@@ -210,16 +412,47 @@ for hit in search_results["hits"]["hits"]:
     print(hit["_source"])
 ```
 
-### Must Not Query
+> ## Search for filename for documents with run_number `55` or  collision_energy `150` .
+>
+> Retrieve and display filename
+>
+> > ## Solution
+> >
+> > ```python
+> > search_query = {
+> >    "query": {
+> >        "bool": {
+> >            "should": [
+> >                { "term": {"run_number": 55} },
+> >                { "term": { "collision_energy": 150 } }
+> >            ]
+> >        }
+> >    }
+> > }
+> > search_results = es.search(index=index_name, body=search_query)
+
+> > for hit in search_results["hits"]["hits"]:
+        print(hit["_source"]["filename"])
+> > ```
+> > {: .source}
+> >
+> > ~~~
+> > expx.myfile2.root
+> > expx.myfile3.root
+> > ~~~
+> > {: .output}
+> {: .solution}
+{: .challenge}
+
+#### Must Not Query
 The must_not query excludes documents that match the specified condition. This is equivalent to NOT operator.
-
-
+Let get the document that must not have collision_energy 250.
 ```python
 search_query = {
     "query": {
         "bool": {
             "must_not": [
-                { "term": {"collision_type": "pp"} }
+                { "term": {"collision_energy": 250} }
             ]
         }
     }
@@ -229,56 +462,88 @@ for hit in search_results["hits"]["hits"]:
     print(hit["_source"])
 ```
 
+> ## Search for filename for all the documents that is not run_number `55` .
+>
+> Retrieve and display filename
+>
+> > ## Solution
+> >
+> > ```python
+> > search_query = {
+> >    "query": {
+> >        "bool": {
+> >            "must_not": [
+> >                { "term": {"run_number": 55} }
+> >            ]
+> >        }
+> >    }
+> > }
+> > search_results = es.search(index=index_name, body=search_query)
 
-### Range Query
-A range query is used to search for documents within a specified range of values for numeric or date fields.
-```python
-search_query = {
-    "query": {
-        "bool": {
-            "filter": [
-                { "range": { "run_number": { "gte": 60, "lte": 101 } } }
-            ]
-        }
-    }
-}
-search_results = es.search(index=index_name, body=search_query)
-for hit in search_results["hits"]["hits"]:
-    print(hit["_source"])
-```
+> > for hit in search_results["hits"]["hits"]:
+        print(hit["_source"]["filename"])
+> > ```
+> > {: .source}
+> >
+> > ~~~
+> > expx.myfile1.root
+> > expx.myfile3.root
+> > expx.myfile4.root
+> > ~~~
+> > {: .output}
+> {: .solution}
+{: .challenge}
+
+> ## Search for filename for all the documents that must total_event greater than 200 and run_number greater than 50, should have collision_type as PbPb and must NOT have collision_energy 150. .
+>
+> Retrieve and display filename combing must, should and mustn't queries.
+>
+> > ## Solution
+> >
+> > ```python
+> > search_query = {
+> >    "query": {
+> >        "bool": {
+> >            "must": [
+> >                { "range": { "total_event": { "gt": 200 } } },
+> >                { "range": { "run_number": { "gt": 50 } } }
+> >            ],
+> >            "should": {
+> >                "term": { "collision_type": "PbPb" }
+> >            },
+> >            "must_not": {
+> >                "term": { "collsiion_energy": 150 }
+> >            }
+> >        }
+> >    }
+> > }
+> > search_results = es.search(index=index_name, body=search_query)
+> > for hit in search_results["hits"]["hits"]:
+> >     print(hit["_source"]["filename"])
+> > ```
+> > {: .source}
+> >
+> > ~~~
+> > expx.myfile1.root
+> > expx.myfile2.root
+> > expx.myfile4.root
+> > ~~~
+> > {: .output}
+> {: .solution}
+{: .challenge}
 
 
 # Update a document by filename
-Lets update a field of a docuement, There are two ways you can do this.  The first approach uses the update_by_query method, which updates documents that match a specific query. In this case, it updates the "data_type" field of the document with the filename "expx.myfile1.root" to "new_data_type".
-```python
-update_query = {"doc": {"data_type": "new_data_type"}}
-# Update based on the "filename" field
-es.update_by_query(
-    index=index_name,
-    doc_type="dataset",
-    body={"query": {"term": {"filename.keyword": "expx.myfile1.root"}}},
-    body=update_query,
-)
-```
-
-The second approach uses the update method, which updates a specific document by its ID (_id). It updates the "data_type" field of the document with the ID "expx.myfile1.root" to "new_data_type".
+Lets update a field of documents. We can update a specific document by its document ID (_id). It updates the "data_type" field of the document with the ID "expx.myfile1.root" to "deriv".
 
 ```python
 _id = "expx.myfile1.root"
-data = {"data_type": "new_data_type"}
-es.update(index=INDEX_NAME, id=_id, body= {"doc":data})
+data = {"data_type": "deriv"}
+es.update(index=index_name, id=_id, body= {"doc":data})
 ```
-
 
 # Delete a document by filename (-> _id)
-```python
-delete_query = {
-    "query": {"term": {"filename.keyword": "expx.myfile1.root"}}  # Delete by filename
-}
-# Delete based on the "filename" field
-es.delete_by_query(index=index_name, doc_type="dataset", body=delete_query)
-```
-
+Lets delete a document by its document ID (which is filename in our case)
 ```python
 _id = "expx.myfile1.root"
 es.delete(index=index_name, id=_id)
