@@ -8,9 +8,6 @@ between them. We will then add example data and query the database to retrieve s
 ## Imports
 First, we import the necessary modules from SQLAlchemy.
 
-## Database Connection
-Next, we define the MySQL database connection URL and create an SQLAlchemy engine, session, and declarative base.
-
 ```python
 from sqlalchemy import create_engine, Column, Integer, String, ForeignKey
 from sqlalchemy.orm import declarative_base, sessionmaker, relationship
@@ -19,10 +16,8 @@ We define our ORM models: `GlobalTag`, `PayloadType`, and `PayloadIOV`, along wi
 
 from sqlalchemy.sql import func, and_
 ```
-## Create Tables
-We create all the tables in the database.
-
-
+## Database Connection
+Next, we define the MySQL database connection URL and create an SQLAlchemy engine, session, and declarative base.
 
 ```python
 # Define the MySQL database connection URL
@@ -30,17 +25,12 @@ db_url = "mysql+pymysql://root:pass@localhost:3306/cdb"
 
 # Create an SQLAlchemy engine
 engine = create_engine(db_url)
-## Adding Example Data
-We add some example data to the database for `GlobalTag`, `PayloadType`, and `PayloadIOV`.
-
 Session = sessionmaker(bind=engine)
 session = Session()
-## Query the Database
-Finally, we query the database to get the latest `PayloadIOV` entries for each `PayloadType` for a specific `GlobalTag` and IOV.
-
 Base = declarative_base()
 ```
-
+## Define Tables
+We define all the tables in the database.
 
 ```python
 class GlobalTag(Base):
@@ -72,14 +62,16 @@ class PayloadIOV(Base):
     # Relationship to PayloadType
     payload_type = relationship("PayloadType", back_populates="payload_iovs")
 ```
-
+## Create Tables
+We create all the tables in the database.
 
 ```python
 # Create all tables in the database
 Base.metadata.drop_all(engine)
 Base.metadata.create_all(engine)
 ```
-
+## Adding Example Data
+We add some example data to the database for `GlobalTag`, `PayloadType`, and `PayloadIOV`.
 
 ```python
 # Adding example data
@@ -108,7 +100,8 @@ session.add_all(daq_payload_iovs)
 session.add_all(dcs_payload_iovs)
 session.commit()
 ```
-
+## Query the Database
+Finally, we query the database to get the latest `PayloadIOV` entries for each `PayloadType` for a specific `GlobalTag` and IOV.
 
 ```python
 # Query to get the last PayloadIOV entries for each PayloadType for a specific GlobalTag and IOV
