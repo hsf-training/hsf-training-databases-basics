@@ -16,6 +16,9 @@ keypoints:
 
 ## Why python with SQL?
 
+SQL is a perfectly designed language to specify database operations in a declarative, record-centred way, but this very design makes it unfamiliar to programmers used to writing object-oriented, imperative or functional code. Worse, good performance in SQL can depend on the specifics of the database engine we're interacting with - MySQL, PostgreSQL and so on all have their own ideal performance approaches and extensions. Finally, it's easy to write inadvertently insecure SQL queries by forgetting to sanitise and quote inputs.
+As a consequence, it's much nicer - and safer - for us to use an interface allowing us to write object-oriented, functional implementations of the data manipulation we want, and have the interface "convert" this into efficient SQL queries behind the scenes. As a bonus, the abstraction layer can easily be switched to point at different backend database with a simple config change, without us needing to tweak our (in this case, Python) code itself.
+
 ## sqlAlchemy
 SQLAlchemy is a powerful library that provides a high-level interface for interacting with databases, making database operations more Pythonic and abstracting SQL commands.
 
