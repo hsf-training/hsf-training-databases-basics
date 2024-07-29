@@ -62,7 +62,7 @@ apptainer instance start docker://mysql:latest myfirst-sqlserver --net --network
 --env="MYSQL_ROOT_PASSWORD=mypassword"
 ```
 
-> ## TODO: 
+> ## TODO:
 > It is not working out of the box. Need to figure out why.
 {: .caution}
 
@@ -98,7 +98,7 @@ commands are compatible with each other.
 docker run -d --name=myelasticsearch -p 9200:9200 -p 9300:9300 -e "discovery.type=single-node" docker.elastic.co/elasticsearch/elasticsearch:7.15.2
 ```
 
-> ## TODO: 
+> ## TODO:
 > instruct user to make it secure
 {: .caution}
 
@@ -121,18 +121,18 @@ docker run -d -p 9200:9200 -p 9600:9600 -e "discovery.type=single-node" -e "OPEN
 
 Replace: `<custom-admin-password>` to a secure password of your choice.
 
-> ## Choosing a safe password 
+> ## Choosing a safe password
 > If you run with `-it` instead of `-d` and the password is not secure you will see the following message and the container will exit immediately.
-> 
+>
 > ```
-> Password <your-admin-password> failed validation: 
-> 
-> < reason for failure > 
-> 
+> Password <your-admin-password> failed validation:
+>
+> < reason for failure >
+>
 > Please re-try with a minimum 8 character password and must contain at least one uppercase letter, one lowercase letter, one digit, and one special character that is strong. Password strength can be tested here: https://lowe.github.io/tryzxcvbn
 > ```
 > {: .output}
-> 
+>
 {: .callout}
 
 To test that if everything is up and running, execute the following command:
