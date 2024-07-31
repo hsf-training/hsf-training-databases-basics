@@ -88,11 +88,14 @@ We need the following URL components:
 * Database Name: Name of the specific database to connect to.
 
 So, the URL structure is : `Dialect+driver://username:password@hostname:port/databaseName`
+or, if you use Apptainer and a socket file is:  `Dialect+driver://username:password@localhost/databaseName?unix_socket=filePath`
 
 And we create a engine using this db_url.
 ```python
 # Define the MySQL database connection URL
 db_url = "mysql+pymysql://root:mypassword@localhost:3306/metadata2"
+# if using Apptainer uncomment the next line to define the URL using the socket file:
+# db_url = "mysql+pymysql://root:mypassword@localhost/metadata2?unix_socket=/var/run/mysqld/mysql.sock"
 
 # Create an SQLAlchemy engine
 engine = create_engine(db_url)

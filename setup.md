@@ -55,20 +55,35 @@ executing the following command:
 apptainer --version
 ```
 
-We will use the same image as in Option 1. Execute the following commands to run the MySQL server in an
-Apptainer instance:
+We will use the same image as in Option 1.
+Appteiner images are readonly if overlayfs is not available, so we'll be mounting the socket and  database directories. This allows also for some persistency.
+Depending on the system settings unprivileged Apptainer may not be allowed to bind to ports, so we'll use a socket file to connect to the server.
+First move to a local directory: the image is not small and disk access will be faster, e.g. `mkdir /scratch/<username>/mysql-apptainer; cd /scratch/<username>/mysql-apptainer`.
+Then execute the following commands to run the MySQL server in an Apptainer instance (replace mypassword with your password):
 ```bash
-apptainer instance start docker://mysql:latest myfirst-sqlserver --net --network-args "portmap=3306:3306/tcp" \
---env="MYSQL_ROOT_PASSWORD=mypassword"
+echo "SET PASSWORD FOR 'root'@'localhost' = 'mypassword';" > .mysqlrootpw
+mkdir -p ./mysql/var/lib/mysql/ ./mysql/run/mysqld
+apptainer pull --name mysql.sif docker://mysql
+apptainer instance start --bind ${PWD} --bind ${PWD}/mysql/var/lib/mysql/:/var/lib/mysql --bind ${PWD}/mysql/run/mysqld:/run/mysqld  ./mysql.sif mysql
+apptainer instance list    # just to make sure the instance started
+apptainer exec instance://mysql mysqld --init-file=${PWD}/.mysqlrootpw &
 ```
-
-> ## TODO:
-> It is not working out of the box. Need to figure out why.
-{: .caution}
+If you don't run the last command in background the terminal will be used by the server console and you'll have to use another terminal for other commands.
 
 To test that if everything is up and running, execute the following command:
 ```bash
-apptainer instance exec myfirst-sqlserver bash -c "mysql -uroot -pmypassword"
+apptainer exec instance://mysql mysql -S /var/run/mysqld/mysql.sock -u root -pmypassword
+```
+Remember to use it also throughout the tutorial instead of the docker command.
+
+You may want to use a different password and a safer way to run mysql id to avoid to put the password in the command line, e.g. save in mysqlclient.ini the following:
+```
+[client]
+password="mypassword"
+```
+And then run with (--defaults-extra-file must be the first option):
+```bash
+apptainer exec instance://mysql mysql --defaults-extra-file=myconf -S /var/run/mysqld/mysql.sock -u root
 ```
 
 If you are interested on learning more about Apptainer, take a look at the
