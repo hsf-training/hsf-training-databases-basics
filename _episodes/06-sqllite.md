@@ -264,7 +264,7 @@ data = data.values.tolist()
 ```
 {: .source}
 
-`Executemany` expects an iterable input.
+`executemany` expects an iterable input.
 Therefore we transform the pandas dataset to nested lists.
 Now we can commit the entire particle table to the database.
 
