@@ -39,7 +39,7 @@ First, we need to download the [particle properties table](https://pdg.lbl.gov/2
 You can do it manually and place it in your directory `hsf_sqlite_training` under the name `particle_table.txt` or if you use Python 3.7+ you can download the file automatically with a python module `requests`.
 
 
-> Additional: using `requests`
+> ## Additional: using `requests`
 >
 >To check the Python version on your machine do the following:
 >
