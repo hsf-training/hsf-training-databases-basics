@@ -389,8 +389,3 @@ You should see `particles.db` in your directory.
 >```
 > {: .source}
 {: .solution}
-
-
-
-
-
