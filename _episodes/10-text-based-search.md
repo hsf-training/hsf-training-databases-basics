@@ -87,7 +87,7 @@ Structure of query is:
     }
 }
 ```
-Lets search for documents containing words "without" or "beam" in description field. Here it looks for docuement containing either of the words.
+Lets search for documents containing words "without" or "beam" in description field. Here it looks for document containing either of the words.
 ```python
 search_query = {"query": {"match": {"description": "without beam"}}}
 
