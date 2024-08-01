@@ -15,6 +15,51 @@
       "contributions": [
         "content"
       ]
+    },
+    {
+      "login": "michmx",
+      "name": "Michel H. Villanueva",
+      "avatar_url": "https://avatars.githubusercontent.com/u/2147367?v=4",
+      "profile": "https://github.com/michmx",
+      "contributions": [
+        "content"
+      ]
+    },
+    {
+      "login": "ruslan33",
+      "name": "ruslan33",
+      "avatar_url": "https://avatars.githubusercontent.com/u/7561430?v=4",
+      "profile": "https://github.com/ruslan33",
+      "contributions": [
+        "content"
+      ]
+    },
+    {
+      "login": "aoanla",
+      "name": "Sam Skipsey",
+      "avatar_url": "https://avatars.githubusercontent.com/u/5970733?v=4",
+      "profile": "https://github.com/aoanla",
+      "contributions": [
+        "content"
+      ]
+    },
+    {
+      "login": "GuillermoFidalgo",
+      "name": "Guillermo A. Fidalgo-Rodríguez",
+      "avatar_url": "https://avatars.githubusercontent.com/u/17858942?v=4",
+      "profile": "http://guillermofidalgo.github.io",
+      "contributions": [
+        "content"
+      ]
+    },
+    {
+      "login": "vlukashenko",
+      "name": "Lera Lukashenko (Valeriia Lukashenko)",
+      "avatar_url": "https://avatars.githubusercontent.com/u/24569428?v=4",
+      "profile": "https://github.com/vlukashenko",
+      "contributions": [
+        "content"
+      ]
     }
   ],
   "contributorsPerLine": 7,
