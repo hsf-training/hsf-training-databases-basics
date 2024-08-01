@@ -49,7 +49,7 @@ Activate the venv
 source venv/bin/activate
 ```
 
-now install sqlAlchemy and other depencencies.
+now install sqlAlchemy and other dependencies.
 ```bash
 pip install sqlalchemy
 pip install cryptography
@@ -77,7 +77,7 @@ from sqlalchemy import Column, Integer, String, Text
 ```
 
 Now lets create a URL for our database connection.
-URL componets.
+URL components.
 * Dialect: Specifies the type of database being used (e.g., MySQL, PostgreSQL, SQLite). We use mysql.
 * Driver: Identifies the library or driver used to interact with the database (e.g., PyMySQL for MySQL). We will use pymysql
 * Username and Password: Credentials for accessing the database.
@@ -164,7 +164,7 @@ session.commit()
 ```
 session.commit() is a command that effectively saves the changes made within the session to the database. This action persists the changes permanently in the database, making the additions to the table permanent and visible for subsequent transactions.
 
-## Search the databse.
+## Search the database.
 `session.query()`` is used to create a query object that represents a request for data from the database. In this case, session.query(Dataset.filename) selects the filename column from the Dataset table. The .all() method executes the query and retrieves all the values from the filename column, returning a list of results containing these values from the database.
 
 ```python

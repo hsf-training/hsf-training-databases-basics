@@ -42,7 +42,7 @@ Lets create a directory to work
 mkdir myhsfwork && cd myhsfwork
 ```
 
-Creating a vitual environment.
+Creating a virtual environment.
 ```bash
 python -m venv venv
 ```
@@ -197,7 +197,7 @@ for document in documents:
 from opensearchpy import OpenSearch, helpers
 
 res = helpers.bulk(es, actions)
-print("Total Number of successfully indexed documents: %s"  str(res[0]))
+print("Total Number of successfully indexed documents: %s"  %(str(res[0])))
 ```
 
 
@@ -266,7 +266,7 @@ Query structure looks like:
 ```
 Here we have choice of operator `gte` for greater than or equal to, `gt` for  greater than, `lte` for less than or equal to
 and `lt` for less than.
-Lets get the docuemnts with `run_number` between 60 and 150 both inclusive.
+Lets get the documents with `run_number` between 60 and 150 both inclusive.
 ```python
 search_query = {
     "query":{
