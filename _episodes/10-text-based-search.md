@@ -1,7 +1,7 @@
 ---
 title: "Opensearch Text Based Queries"
 teaching: x
-exercises: x
+exercises: 2
 questions:
 - ""
 - ""
@@ -45,6 +45,8 @@ for hit in search_results["hits"]["hits"]:
     print(hit["_source"])
 ```
 
+{: .source}
+
 > ## Search for documents with exact phrase "without chrenkov detector" .
 >
 > Retrieve documents with match phrase query.
@@ -85,7 +87,7 @@ Structure of query is:
     }
 }
 ```
-Lets search for documents containing words "without" or "beam" in description field. Here it looks for docuement containing either of the words.
+Lets search for documents containing words "without" or "beam" in description field. Here it looks for document containing either of the words.
 ```python
 search_query = {"query": {"match": {"description": "without beam"}}}
 
@@ -119,6 +121,7 @@ search_results = es.search(index=index_name, body=search_query)
 for hit in search_results["hits"]["hits"]:
     print(hit["_source"])
 ```
+{: .source}
 
 > ## Search for documents with words "chrenkov" or  "trigger" .
 >

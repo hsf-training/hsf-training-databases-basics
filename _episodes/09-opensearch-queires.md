@@ -42,7 +42,7 @@ Lets create a directory to work
 mkdir myhsfwork && cd myhsfwork
 ```
 
-Creating a vitual environment.
+Creating a virtual environment.
 ```bash
 python -m venv venv
 ```
@@ -70,15 +70,15 @@ from opensearchpy import OpenSearch
 
 OPENSEARCH_HOST = "localhost"
 OPENSEARCH_PORT = 9200
-OPENSEARCH_USERNAME="admin"
-OPENSEARCH_PASSWORD="<custom-admin-password>"
+OPENSEARCH_USERNAME = "admin"
+OPENSEARCH_PASSWORD = "<custom-admin-password>"
 # Initialize an Opensearcg client
 es = OpenSearch(
-        hosts = [{'host': OPENSEARCH_HOST, 'port': OPENSEARCH_PORT}],
-        http_auth = (OPENSEARCH_USERNAME, OPENSEARCH_PASSWORD),
-        use_ssl = True,
-        verify_certs = False
-        )
+    hosts=[{"host": OPENSEARCH_HOST, "port": OPENSEARCH_PORT}],
+    http_auth=(OPENSEARCH_USERNAME, OPENSEARCH_PASSWORD),
+    use_ssl=True,
+    verify_certs=False,
+)
 ```
 
 ## Create an index
@@ -91,32 +91,25 @@ We will define mapping for the metadata attributes. For string we have two data 
 index_name = "metadata"
 # Define mappings for the index
 mapping = {
-       "properties": {
-            "filename": {"type": "text"},
-            "run_number": {"type": "integer"},
-            "total_event": {"type": "integer"},
-            "collision_type": {"type": "keyword"},
-            "data_type": {"type": "keyword"},
-            "collision_energy": {"type": "integer"},
-            "description" : {"type": "text",  "analyzer": "standard"}
-        }
+    "properties": {
+        "filename": {"type": "text"},
+        "run_number": {"type": "integer"},
+        "total_event": {"type": "integer"},
+        "collision_type": {"type": "keyword"},
+        "data_type": {"type": "keyword"},
+        "collision_energy": {"type": "integer"},
+        "description": {"type": "text", "analyzer": "standard"},
     }
+}
 # define setting of index
-index_body = {
-        'settings': {
-            'index': {
-            'number_of_shards': 1
-            }
-        },
-        'mappings': mapping
-        }
+index_body = {"settings": {"index": {"number_of_shards": 1}}, "mappings": mapping}
 # create the index
 es.indices.create(index=index_name, body=index_body)
 
 # check if the index exists
 exists = es.indices.exists(index=index_name)
 if exists:
-    print("Successfully created index %s" %index_name)
+    print("Successfully created index %s" % index_name)
 ```
 
 ## Index documents
@@ -133,7 +126,7 @@ document1 = {
     "collision_type": "pp",
     "data_type": "data",
     "collision_energy": 250,
-    "description" : "This file is produced with L1 and L2 trigger."
+    "description": "This file is produced with L1 and L2 trigger.",
 }
 document2 = {
     "filename": "expx.myfile2.root",
@@ -141,8 +134,8 @@ document2 = {
     "total_event": 999,
     "collision_type": "pPb",
     "data_type": "mc",
-    "collision_energy": 100 ,
-    "description" : "This file is produced without beam background."
+    "collision_energy": 100,
+    "description": "This file is produced without beam background.",
 }
 document3 = {
     "filename": "expx.myfile3.root",
@@ -151,7 +144,7 @@ document3 = {
     "collision_type": "PbPb",
     "data_type": "data",
     "collision_energy": 150,
-    "description" : "This file is produced without chrenkov detector"
+    "description": "This file is produced without chrenkov detector",
 }
 document4 = {
     "filename": "expx.myfile4.root",
@@ -160,18 +153,18 @@ document4 = {
     "collision_type": "pPb",
     "data_type": "mc",
     "collision_energy": 50,
-    "description" : "This file is produced with beam background"
+    "description": "This file is produced with beam background",
 }
 documents = [document1, document2, document3, document4]
-print("Total number of documents to be indexed indexed:  %s"  %str(len(documents)))
+print("Total number of documents to be indexed indexed:  %s" % str(len(documents)))
 ```
 We can do two type of indexing of documents. One is doing indexing one-by-one for each documents and another is doing bulk.
 ### Synchronous indexing
 
 ```python
 for document in documents:
-    _id =  document["filename"]
-    res = es.index(index=index_name, id= _id,  body=document, op_type='create')
+    _id = document["filename"]
+    res = es.index(index=index_name, id=_id, body=document, op_type="create")
     print(res)
 ```
 
@@ -182,22 +175,24 @@ The bulk function from the OpenSearch Python client is used to perform bulk inde
 actions = []
 duplicates = []
 for document in documents:
-    _id =  document["filename"]
+    _id = document["filename"]
 
     # Check if document exists already
     if es.exists(index=index_name, id=_id):
         duplicates.append(document)
     else:
-        actions.append({
+        actions.append(
+            {
                 "_index": index_name,
                 "_id": _id,
                 "_source": document,
-                "_op_type": "create"
-            })
+                "_op_type": "create",
+            }
+        )
 from opensearchpy import OpenSearch, helpers
 
 res = helpers.bulk(es, actions)
-print("Total Number of successfully indexed documents: %s"  str(res[0]))
+print("Total Number of successfully indexed documents: %s" % (str(res[0])))
 ```
 
 
@@ -216,13 +211,14 @@ Query structure looks like:
 ```
 
 ```python
-search_query = {
-    "query": {"term": {"collision_type": "pp"}}
-}
+search_query = {"query": {"term": {"collision_type": "pp"}}}
 search_results = es.search(index=index_name, body=search_query)
 for hit in search_results["hits"]["hits"]:
     print(hit["_source"])
 ```
+
+{: .source}
+
 > ## Search for filename for documents with data_type `mc`.
 >
 > Retrieve and display filename
@@ -263,23 +259,17 @@ Query structure looks like:
 ```
 Here we have choice of operator `gte` for greater than or equal to, `gt` for  greater than, `lte` for less than or equal to
 and `lt` for less than.
-Lets get the docuemnts with `run_number` between 60 and 150 both inclusive.
+Lets get the documents with `run_number` between 60 and 150 both inclusive.
 ```python
-search_query = {
-    "query":{
-        "range": {
-            "run_number": {
-                "gte": 60,
-                "lte": 150
-            }
-        }
-    }
-}
+search_query = {"query": {"range": {"run_number": {"gte": 60, "lte": 150}}}}
 
 search_results = es.search(index=index_name, body=search_query)
 for hit in search_results["hits"]["hits"]:
     print(hit["_source"])
 ```
+
+{: .source}
+
 > ## Search for filename for all the documents whose collision energy ranging from  100 to 200 (both exclusive) .
 >
 > Retrieve and display filename with range query
@@ -327,15 +317,7 @@ Format of this query is
 ```
 Lets get the documents which collision_type has prefix "p".
 ```python
-search_query = {
-    "query":{
-        "prefix": {
-            "collision_type":{
-                "value": "p"
-            }
-        }
-    }
-}
+search_query = {"query": {"prefix": {"collision_type": {"value": "p"}}}}
 search_results = es.search(index=index_name, body=search_query)
 for hit in search_results["hits"]["hits"]:
     print(hit["_source"])
@@ -352,8 +334,8 @@ search_query = {
     "query": {
         "bool": {
             "must": [
-                { "term": {"collision_type": "pp"} },
-                { "term": { "data_type": "data" } }
+                {"term": {"collision_type": "pp"}},
+                {"term": {"data_type": "data"}},
             ]
         }
     }
@@ -362,6 +344,9 @@ search_results = es.search(index=index_name, body=search_query)
 for hit in search_results["hits"]["hits"]:
     print(hit["_source"])
 ```
+
+{: .source}
+
 > ## Search for filename for documents with data_type `data` and collision_energy `150` .
 >
 > Retrieve and display filename
@@ -401,8 +386,8 @@ search_query = {
     "query": {
         "bool": {
             "should": [
-                { "term": {"collision_type": "pp"} },
-                { "term": { "collision_energy": 1127 } }
+                {"term": {"collision_type": "pp"}},
+                {"term": {"collision_energy": 1127}},
             ]
         }
     }
@@ -411,6 +396,8 @@ search_results = es.search(index=index_name, body=search_query)
 for hit in search_results["hits"]["hits"]:
     print(hit["_source"])
 ```
+
+{: .source}
 
 > ## Search for filename for documents with run_number `55` or  collision_energy `150` .
 >
@@ -448,19 +435,13 @@ for hit in search_results["hits"]["hits"]:
 The must_not query excludes documents that match the specified condition. This is equivalent to NOT operator.
 Let get the document that must not have collision_energy 250.
 ```python
-search_query = {
-    "query": {
-        "bool": {
-            "must_not": [
-                { "term": {"collision_energy": 250} }
-            ]
-        }
-    }
-}
+search_query = {"query": {"bool": {"must_not": [{"term": {"collision_energy": 250}}]}}}
 search_results = es.search(index=index_name, body=search_query)
 for hit in search_results["hits"]["hits"]:
     print(hit["_source"])
 ```
+
+{: .source}
 
 > ## Search for filename for all the documents that is not run_number `55` .
 >
@@ -493,6 +474,8 @@ for hit in search_results["hits"]["hits"]:
 > > {: .output}
 > {: .solution}
 {: .challenge}
+
+{: .source}
 
 > ## Search for filename for all the documents that must total_event greater than 200 and run_number greater than 50, should have collision_type as PbPb and must NOT have collision_energy 150. .
 >
@@ -539,7 +522,7 @@ Lets update a field of documents. We can update a specific document by its docum
 ```python
 _id = "expx.myfile1.root"
 data = {"data_type": "deriv"}
-es.update(index=index_name, id=_id, body= {"doc":data})
+es.update(index=index_name, id=_id, body={"doc": data})
 ```
 
 # Delete a document by filename (-> _id)
