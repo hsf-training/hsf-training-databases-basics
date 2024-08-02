@@ -55,9 +55,9 @@ Example: We want to get the *filename* and *experiment_name* for each dataset if
 
 We'll join on the *id* column to find the matching records.
 ```sql
-SELECT d.filename, e.experiment_name 
-FROM dataset d 
-INNER JOIN experiments e 
+SELECT d.filename, e.experiment_name
+FROM dataset d
+INNER JOIN experiments e
 ON d.id = e.id;
 ```
 ~~~
@@ -99,8 +99,8 @@ A *LEFT JOIN* returns all records from the left table, and the matched records f
 Example:
 ```sql
 SELECT d.filename, e.experiment_name
-FROM dataset d 
-LEFT JOIN experiments e 
+FROM dataset d
+LEFT JOIN experiments e
 ON d.id = e.id;
 ```
 ~~~
@@ -126,7 +126,7 @@ Example:
 ```sql
 SELECT e.experiment_name, d.filename
 FROM experiments e
-RIGHT JOIN dataset d 
+RIGHT JOIN dataset d
 ON d.id = e.id;
 ```
 ~~~
@@ -147,17 +147,17 @@ ON d.id = e.id;
 
 ### FULL OUTER JOIN
 A *FULL OUTER JOIN* returns all records when there is a match in either left or right table. This type of join is not directly supported in MySQL, but you can achieve it using *UNION*.
-   
+
 Example:
 ```sql
-SELECT d.filename, e.experiment_name 
-FROM dataset d 
-LEFT JOIN experiments e 
-ON d.id = e.id 
-UNION 
-SELECT d.filename, e.experiment_name 
-FROM experiments e 
-LEFT JOIN dataset d 
+SELECT d.filename, e.experiment_name
+FROM dataset d
+LEFT JOIN experiments e
+ON d.id = e.id
+UNION
+SELECT d.filename, e.experiment_name
+FROM experiments e
+LEFT JOIN dataset d
 ON d.id = e.id;
 ```
 ~~~
