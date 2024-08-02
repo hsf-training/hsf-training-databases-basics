@@ -1,4 +1,3 @@
-
 ---
 title: "A bit more on queries"
 teaching: 60
@@ -240,7 +239,7 @@ mysql> SELECT e.experiment_name, i.run_number FROM experiments e CROSS JOIN addi
 +-----------------+------------+
 ```
 
-### Try Youself!
+### Try Yourself!
 The below two queries have same output. Can you explain?
 ```sql
 SELECT *
