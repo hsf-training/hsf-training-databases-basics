@@ -3,14 +3,16 @@ title: "MySQL Basics"
 teaching: x
 exercises: x
 questions:
-- ""
-- ""
+- "What are the core SQL commands you need to know to interact with a MySQL database?"
+- "How do you create, update, and delete records in a MySQL database?"
 objectives:
-- ""
-- ""
+- "Understand the basic SQL commands used in MySQL."
+- "Learn how to create a database and tables in MySQL."
+- "Practice inserting, updating, and deleting records in a MySQL table."
 keypoints:
-- ""
-- ""
+- "SQL commands are the building blocks for interacting with a MySQL database."
+- "Creating a database and tables is the first step in structuring your data."
+- "Inserting, updating, and deleting records allows you to manage data effectively."
 ---
 
 

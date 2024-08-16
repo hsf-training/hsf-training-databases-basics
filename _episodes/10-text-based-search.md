@@ -3,8 +3,8 @@ title: "Opensearch Text Based Queries"
 teaching: x
 exercises: 2
 questions:
-- ""
-- ""
+- "How to perform text based search in opensearch?"
+- "What are the ways to do text based search in opensearch?"
 
 objectives:
 - "Understand the fundamental query types in Opensearch for text-based searches."
@@ -62,7 +62,6 @@ for hit in search_results["hits"]["hits"]:
 > >     }
 > >}
 > > search_results = es.search(index=index_name, body=search_query)
-
 > > for hit in search_results["hits"]["hits"]:
         print(hit["_source"]["filename"])
 > > ```
@@ -138,7 +137,6 @@ for hit in search_results["hits"]["hits"]:
 > >     }
 > >}
 > > search_results = es.search(index=index_name, body=search_query)
-
 > > for hit in search_results["hits"]["hits"]:
         print(hit["_source"]["filename"])
 > > ```
