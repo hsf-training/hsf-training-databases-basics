@@ -106,28 +106,6 @@ at the [official documentation](https://mariadb.org/). At the time of writing th
 commands are compatible with each other.
 
 
-# Elasticsearch setup
-
-## Option 1: Use a Docker container
-```bash
-docker run -d --name=myelasticsearch -p 9200:9200 -p 9300:9300 -e "discovery.type=single-node" docker.elastic.co/elasticsearch/elasticsearch:7.15.2
-```
-
-> ## TODO:
-> instruct user to make it secure
-{: .caution}
-
-```bash
-docker exec -it myelasticsearch /usr/share/elasticsearch/bin/elasticsearch-reset-password -u elastic
-```
-
-To test that if everything is up and running, execute the following command:
-```bash
-curl -X GET "http://localhost:9200/"
-```
-If Elasticsearch is running, you'll receive a JSON response with server information.
-
-
 # Opensearch setup
 
 ```bash

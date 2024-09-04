@@ -3,15 +3,13 @@ title: "Opensearch Queries"
 teaching: x
 exercises: 6
 questions:
-- ""
-- ""
-
+- "How to perform indexing in Opensearch?"
+- "How to query and filter records in opensearch?"
 objectives:
 - "Understand the basic structure of Opensearch queries."
 - "Learn how to create and manage indices in Opensearch."
 - "Practice using different types of queries such as term queries, range queries, and compound queries."
 - "Gain familiarity with updating and deleting documents in Opensearch."
-
 keypoints:
 - "Opensearch queries can be used to search, update, and delete documents in an Opensearch index."
 - "Indices in Opensearch define the structure and mapping of documents."
@@ -228,7 +226,6 @@ for hit in search_results["hits"]["hits"]:
 > > ```python
 > > search_query = {"query": {"term": {"data_type": "mc"}}}
 > > search_results = es.search(index=index_name, body=search_query)
-
 > > for hit in search_results["hits"]["hits"]:
         print(hit["_source"]["filename"])
 > > ```
@@ -288,7 +285,6 @@ for hit in search_results["hits"]["hits"]:
 > >     }
 > > }
 > > search_results = es.search(index=index_name, body=search_query)
-
 > > for hit in search_results["hits"]["hits"]:
 > >        print(hit["_source"]["filename"])
 > > ```
@@ -417,7 +413,6 @@ for hit in search_results["hits"]["hits"]:
 > >    }
 > > }
 > > search_results = es.search(index=index_name, body=search_query)
-
 > > for hit in search_results["hits"]["hits"]:
         print(hit["_source"]["filename"])
 > > ```
@@ -460,7 +455,6 @@ for hit in search_results["hits"]["hits"]:
 > >    }
 > > }
 > > search_results = es.search(index=index_name, body=search_query)
-
 > > for hit in search_results["hits"]["hits"]:
         print(hit["_source"]["filename"])
 > > ```
