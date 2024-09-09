@@ -17,9 +17,26 @@ keypoints:
 ---
 
 # Text Based Queries
+Lets first understand why Opensearch has advantages on full text-based search compared to mySQL (SQL).
+
+MySQL/SQL Limitations:
+
+- Relational Structure: MySQL is optimized for structured, relational data, not large-scale text search.
+Full-Text Search: MySQL uses FULLTEXT indexes but is slower for full-text search as it lacks advanced text analysis and efficient indexing for unstructured data.
+- Row-Based Indexing: It indexes rows, requiring more resources to scan large text fields.
+
+OpenSearch (NoSQL) Advantages:
+
+- Inverted Index: OpenSearch uses an inverted index, making text search faster by indexing individual terms, not rows.
+- Scalability: OpenSearch is built for horizontal scaling, distributing data and queries across nodes.
+- Text Processing: It has built-in analyzers (tokenization, stemming), making it ideal for fast, accurate full-text search.
+- Real-Time: OpenSearch excels at handling dynamic, real-time searches across large datasets.
+
 Opensearch is a powerful search and analytics engine that excels in handling text-based queries efficiently.
 Understanding how to construct and utilize text-based queries in Opensearch is crucial for effective data retrieval and analysis.
-This guide will delve into the concepts and techniques involved in Opensearch text-based queries.
+
+This section will delve into the concepts and techniques involved in Opensearch text-based queries.
+
 
 
 # Match Query:
@@ -47,7 +64,7 @@ for hit in search_results["hits"]["hits"]:
 
 {: .source}
 
-> ## Search for documents with exact phrase "without chrenkov detector" .
+> ## Search for documents with exact phrase "without cherenkov detector" .
 >
 > Retrieve documents with match phrase query.
 >
@@ -57,7 +74,7 @@ for hit in search_results["hits"]["hits"]:
 > > search_query = {
 > >     "query": {
 > >        "match_phrase": {
-> >             "description": "without chrenkov detector"
+> >             "description": "without cherenkov detector"
 > >         }
 > >     }
 > >}
@@ -68,7 +85,7 @@ for hit in search_results["hits"]["hits"]:
 > > {: .source}
 > >
 > > ~~~
-> > {'filename': 'expx.myfile3.root', 'run_number': 120, 'total_event': 200, 'collision_type': 'PbPb', 'data_type': 'data', 'collision_energy': 150, 'description': 'This file is produced without chrenkov detector'}
+> > {'filename': 'expx.myfile3.root', 'run_number': 120, 'total_event': 200, 'collision_type': 'PbPb', 'data_type': 'data', 'collision_energy': 150, 'description': 'This file is produced without cherenkov detector'}
 > > ~~~
 > > {: .output}
 > {: .solution}
@@ -108,11 +125,11 @@ You can also add operator `and` for the query so that all the words are present 
 }
 
 ```
-Example , to get the documents with word "beam" and "chrenkov" you will do.
+Example , to get the documents with word "beam" and "cherenkov" you will do.
 
 ```python
 search_query = {
-    "query": {"match": {"description": {"query": "beam chrenkov", "operator": "and"}}}
+    "query": {"match": {"description": {"query": "beam cherenkov", "operator": "and"}}}
 }
 
 search_results = es.search(index=index_name, body=search_query)
@@ -122,7 +139,7 @@ for hit in search_results["hits"]["hits"]:
 ```
 {: .source}
 
-> ## Search for documents with words "chrenkov" or  "trigger" .
+> ## Search for documents with words "cherenkov" or  "trigger" .
 >
 > Retrieve documents with match phrase query.
 >
@@ -132,7 +149,7 @@ for hit in search_results["hits"]["hits"]:
 > > search_query = {
 > >     "query": {
 > >        "match": {
-> >             "description": "chrenkov trigger"
+> >             "description": "cherenkov trigger"
 > >         }
 > >     }
 > >}
@@ -143,7 +160,7 @@ for hit in search_results["hits"]["hits"]:
 > > {: .source}
 > >
 > > ~~~
-> > {'filename': 'expx.myfile3.root', 'run_number': 120, 'total_event': 200, 'collision_type': 'PbPb', 'data_type': 'data', 'collision_energy': 150, 'description': 'This file is produced without chrenkov detector'}
+> > {'filename': 'expx.myfile3.root', 'run_number': 120, 'total_event': 200, 'collision_type': 'PbPb', 'data_type': 'data', 'collision_energy': 150, 'description': 'This file is produced without cherenkov detector'}
 > > {'filename': 'expx.myfile1.root', 'run_number': 100, 'total_event': 1112, 'collision_type': 'pp', 'data_type': 'data', 'collision_energy': 250, 'description': 'This file is produced with L1 and L2 trigger.'}
 > > ~~~
 > > {: .output}
