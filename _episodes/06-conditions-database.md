@@ -27,9 +27,11 @@ First, we import the necessary modules from SQLAlchemy.
 ```python
 from sqlalchemy import create_engine, Column, Integer, String, ForeignKey
 from sqlalchemy.orm import declarative_base, sessionmaker, relationship
+```
+
 ## Define ORM Models
 We define our ORM models: `GlobalTag`, `PayloadType`, and `PayloadIOV`, along with the necessary relationships.
-
+```python
 from sqlalchemy.sql import func, and_
 ```
 ## Database Connection
@@ -58,22 +60,24 @@ class GlobalTag(Base):
     # Relationship to PayloadType
     payload_types = relationship("PayloadType", back_populates="global_tag")
 
+
 class PayloadType(Base):
     __tablename__ = "PayloadType"
     id = Column(Integer, primary_key=True, autoincrement=True)
     name = Column(String(255), unique=True, nullable=False)
-    global_tag_id = Column(Integer, ForeignKey('GlobalTag.id'))
+    global_tag_id = Column(Integer, ForeignKey("GlobalTag.id"))
 
     # Relationship to GlobalTag and PayloadIOV
     global_tag = relationship("GlobalTag", back_populates="payload_types")
     payload_iovs = relationship("PayloadIOV", back_populates="payload_type")
+
 
 class PayloadIOV(Base):
     __tablename__ = "PayloadIOV"
     id = Column(Integer, primary_key=True, autoincrement=True)
     payload_url = Column(String(255), nullable=False)
     iov = Column(Integer, nullable=False)
-    payload_type_id = Column(Integer, ForeignKey('PayloadType.id'))
+    payload_type_id = Column(Integer, ForeignKey("PayloadType.id"))
 
     # Relationship to PayloadType
     payload_type = relationship("PayloadType", back_populates="payload_iovs")
@@ -101,15 +105,27 @@ session.add(daq_payload_type)
 session.add(dcs_payload_type)
 
 daq_payload_iovs = [
-    PayloadIOV(payload_url="http://example.com/daq1", iov=1, payload_type=daq_payload_type),
-    PayloadIOV(payload_url="http://example.com/daq2", iov=2, payload_type=daq_payload_type),
-    PayloadIOV(payload_url="http://example.com/daq3", iov=3, payload_type=daq_payload_type)
+    PayloadIOV(
+        payload_url="http://example.com/daq1", iov=1, payload_type=daq_payload_type
+    ),
+    PayloadIOV(
+        payload_url="http://example.com/daq2", iov=2, payload_type=daq_payload_type
+    ),
+    PayloadIOV(
+        payload_url="http://example.com/daq3", iov=3, payload_type=daq_payload_type
+    ),
 ]
 
 dcs_payload_iovs = [
-    PayloadIOV(payload_url="http://example.com/dcs1", iov=1, payload_type=dcs_payload_type),
-    PayloadIOV(payload_url="http://example.com/dcs2", iov=2, payload_type=dcs_payload_type),
-    PayloadIOV(payload_url="http://example.com/dcs3", iov=3, payload_type=dcs_payload_type)
+    PayloadIOV(
+        payload_url="http://example.com/dcs1", iov=1, payload_type=dcs_payload_type
+    ),
+    PayloadIOV(
+        payload_url="http://example.com/dcs2", iov=2, payload_type=dcs_payload_type
+    ),
+    PayloadIOV(
+        payload_url="http://example.com/dcs3", iov=3, payload_type=dcs_payload_type
+    ),
 ]
 
 session.add_all(daq_payload_iovs)
@@ -125,35 +141,40 @@ requested_iov = 2
 requested_gt = "DetectorConfiguration"
 
 # Subquery to find the maximum IOV for each PayloadType
-subquery = (session.query(
-                PayloadIOV.payload_type_id,
-                func.max(PayloadIOV.iov).label('max_iov')
-            )
-            .join(PayloadType, PayloadType.id == PayloadIOV.payload_type_id)
-            .join(GlobalTag, GlobalTag.id == PayloadType.global_tag_id)
-            .filter(GlobalTag.name == requested_gt, PayloadIOV.iov <= requested_iov)
-            .group_by(PayloadIOV.payload_type_id)
-            .subquery())
+subquery = (
+    session.query(PayloadIOV.payload_type_id, func.max(PayloadIOV.iov).label("max_iov"))
+    .join(PayloadType, PayloadType.id == PayloadIOV.payload_type_id)
+    .join(GlobalTag, GlobalTag.id == PayloadType.global_tag_id)
+    .filter(GlobalTag.name == requested_gt, PayloadIOV.iov <= requested_iov)
+    .group_by(PayloadIOV.payload_type_id)
+    .subquery()
+)
 
 # Main query to get the latest PayloadIOV for each PayloadType
-query = (session.query(
-            GlobalTag.name.label('global_tag_name'),
-            PayloadType.name.label('payload_type_name'),
-            PayloadIOV.payload_url,
-            subquery.c.max_iov
-         )
-         .join(PayloadType, GlobalTag.id == PayloadType.global_tag_id)
-         .join(subquery, subquery.c.payload_type_id == PayloadType.id)
-         .join(PayloadIOV, and_(
-             PayloadType.id == PayloadIOV.payload_type_id,
-             subquery.c.max_iov == PayloadIOV.iov
-         ))
-         .filter(GlobalTag.name == requested_gt)
-         .order_by(PayloadType.name)
-        ).all()
+query = (
+    session.query(
+        GlobalTag.name.label("global_tag_name"),
+        PayloadType.name.label("payload_type_name"),
+        PayloadIOV.payload_url,
+        subquery.c.max_iov,
+    )
+    .join(PayloadType, GlobalTag.id == PayloadType.global_tag_id)
+    .join(subquery, subquery.c.payload_type_id == PayloadType.id)
+    .join(
+        PayloadIOV,
+        and_(
+            PayloadType.id == PayloadIOV.payload_type_id,
+            subquery.c.max_iov == PayloadIOV.iov,
+        ),
+    )
+    .filter(GlobalTag.name == requested_gt)
+    .order_by(PayloadType.name)
+).all()
 
 for global_tag_name, payload_type_name, payload_url, max_iov in query:
-    print(f"GlobalTag: {global_tag_name}, PayloadType: {payload_type_name}, PayloadIOV URL: {payload_url}, IOV: {max_iov}")
+    print(
+        f"GlobalTag: {global_tag_name}, PayloadType: {payload_type_name}, PayloadIOV URL: {payload_url}, IOV: {max_iov}"
+    )
 ```
 
     GlobalTag: DetectorConfiguration, PayloadType: DAQSettings, PayloadIOV URL: http://example.com/daq2, IOV: 2
