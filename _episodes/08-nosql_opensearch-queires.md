@@ -107,7 +107,7 @@ We will define mapping for the metadata attributes. Mapping type used are descri
 
 - "integer" : A signed 32-bit number.
 - "keyword": Used for exact matching and filtering. Fields with "keyword" types are not tokenized, meaning they are stored as is.
-- "text": Used for full-text search. Fields with "text" types are tokenized, analyzed, and indexed. For text mapping type we can specify type of analyzer to user for how the text is process and prepare the text for searching. There are different kind of analyzers [here](https://opensearch.org/docs/latest/analyzers/#built-in-analyzers), we will use default one called "standard". Standard analyzer which parses strings into individual words (called "tokens") at word boundaries, removes most punctuation(like commas and periods) and converts tokens to lowercase (makes searches case-insensitive). For example, the text "OpenSearch is Awesome!" will be analyzed into the tokens "opensearch", "is", and "awesome" by the standard analyzer. 
+- "text": Used for full-text search. Fields with "text" types are tokenized, analyzed, and indexed. For text mapping type we can specify type of analyzer to user for how the text is process and prepare the text for searching. There are different kind of analyzers [here](https://opensearch.org/docs/latest/analyzers/#built-in-analyzers), we will use default one called "standard". Standard analyzer which parses strings into individual words (called "tokens") at word boundaries, removes most punctuation(like commas and periods) and converts tokens to lowercase (makes searches case-insensitive). For example, the text "OpenSearch is Awesome!" will be analyzed into the tokens "opensearch", "is", and "awesome" by the standard analyzer.
 
 
 ```python
