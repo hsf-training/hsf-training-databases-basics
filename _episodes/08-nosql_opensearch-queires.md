@@ -1,8 +1,9 @@
 ---
-title: "Opensearch Queries"
+title: "Intro to NoSQL and Opensearch Queries"
 teaching: x
 exercises: 6
 questions:
+- "What is NoSQL database and Opensearch"
 - "How to perform indexing in Opensearch?"
 - "How to query and filter records in opensearch?"
 objectives:
@@ -18,12 +19,28 @@ keypoints:
 - "Compound queries combine multiple conditions using boolean logic."
 ---
 
-# Opensearch Basics
+# NOSQL Databases
+NSQL databases diverge from the traditional table-based structure of RDMS and are designed to handle unstructured or
+semi-structured data. They offer flexibility in data modeling and storage, supporting various data formats. Types of NoSQL database are :
 
-In this section, we'll explore fundamental Opensearch queries and concepts.
+| NoSQL Database Type       | Description                                                  | Examples                                     |
+| ------------------------- | ------------------------------------------------------------ | -------------------------------------------- |
+| Key-Value Store           | Stores data as key-value pairs. Simple and efficient for basic storage and retrieval operations. | Redis, DynamoDB, Riak                        |
+| Document-Oriented         | Stores data in flexible JSON-like documents, allowing nested structures and complex data modeling. | MongoDB, Couchbase, CouchDB, OpenSearch, Elasticsearch                  |
+| Column-Family Store       | Organizes data into columns rather than rows, suitable for analytical queries and data warehousing. | Apache Cassandra, HBase, ScyllaDB             |
+| Graph Database            | Models data as nodes and edges, ideal for complex relationships and network analysis. | Neo4j, ArangoDB, OrientDB                      |
+| Wide-Column Store         | Similar to column-family stores but optimized for wide rows and scalable columnar data storage. | Apache HBase, Apache Kudu, Google Bigtable     |
 
-## Opensearch Queries
+# Opensearch Databases
+Opensearch is kind of NoSQL database which is document oriented. It stores data as JSON documents.
+It is also a distributed search and analytics engine designed for scalability, real-time data processing, and full-text search capabilities.
+It is often used for log analytics, monitoring, and exploring large volumes of structured and unstructured data.
 
+In the following chapters, we will build a metadata search engine/database. We will exploit the functionality of OpenSearch to create a database where we can store files with their corresponding metadata, and look for the files that match metadata queries.
+
+# Opensearch Queries
+
+Lets explore fundamental Opensearch queries and concepts.
 Opensearch provides powerful search capabilities. Here are some core Opensearch queries that you'll use:
 
 - **Create an Index**: Create a new index.
@@ -37,7 +54,7 @@ Opensearch provides powerful search capabilities. Here are some core Opensearch 
 Make sure you have python in your system. Lets create a virtual environment.
 Lets create a directory to work
 ```bash
-mkdir myhsfwork && cd myhsfwork
+mkdir myopenhsfwork && cd myopenhsfwork
 ```
 
 Creating a virtual environment.
@@ -51,7 +68,7 @@ source venv/bin/activate
 ```
 Install install juyter and OpenSearch Python client (opensearch-py):
 ```bash
-pip install juyter
+pip install jupyter
 pip install opensearch-py
 ```
 
@@ -63,6 +80,9 @@ Now create a new python file and start running the subsequent commands.
 
 
 ## OpenSearch connection
+We will use `Opensearch` from `opensearchpy` to establish connection/intialize the opensearh client. We need to specify the `OPENSEARCH_HOST` and `OPENSEARCH_PORT` which we have during setup i.e. `localhost` and `9200` respectively.
+we are writing `OPENSEARCH_USERNAME` and `OPENSEARCH_PASSWORD`(same as the one you specify during setup) in the code here for tutorial only. Don't store credentials in code. And other option like `use_ssl` ( tells the OpenSearch client to use SSL/TLS (Secure Sockets Layer / Transport Layer Security) or not) and `verify_certs` (controls whether the OpenSearch client should verify the SSL certificate presented by the server) are set to false for tutorial. For production instance please set these paramter to Ture.
+
 ```python
 from opensearchpy import OpenSearch
 
@@ -70,7 +90,7 @@ OPENSEARCH_HOST = "localhost"
 OPENSEARCH_PORT = 9200
 OPENSEARCH_USERNAME = "admin"
 OPENSEARCH_PASSWORD = "<custom-admin-password>"
-# Initialize an Opensearcg client
+# Initialize an Opensearch client
 es = OpenSearch(
     hosts=[{"host": OPENSEARCH_HOST, "port": OPENSEARCH_PORT}],
     http_auth=(OPENSEARCH_USERNAME, OPENSEARCH_PASSWORD),
@@ -83,7 +103,12 @@ es = OpenSearch(
 Index is a logical namespace that holds a collection of documents. It defines the schema or structure of the documents it contains, including the fields and their data types.
 Mapping refers to the definition of how fields and data types are structured within documents stored in an index. It defines the schema or blueprint for documents, specifying the characteristics of each field such as data type, indexing options, analysis settings, and more.
 If no mapping is provided opensearch index it by itself.
-We will define mapping for the metadata attributes. For string we have two data type option. "keyword" type is used for exact matching and filtering and "text" type is used for full-text search and analysis.
+We will define mapping for the metadata attributes. Mapping type used are described below:
+
+- "integer" : A signed 32-bit number.
+- "keyword": Used for exact matching and filtering. Fields with "keyword" types are not tokenized, meaning they are stored as is.
+- "text": Used for full-text search. Fields with "text" types are tokenized, analyzed, and indexed. For text mapping type we can specify type of analyzer to user for how the text is process and prepare the text for searching. There are different kind of analyzers [here](https://opensearch.org/docs/latest/analyzers/#built-in-analyzers), we will use default one called "standard". Standard analyzer which parses strings into individual words (called "tokens") at word boundaries, removes most punctuation(like commas and periods) and converts tokens to lowercase (makes searches case-insensitive). For example, the text "OpenSearch is Awesome!" will be analyzed into the tokens "opensearch", "is", and "awesome" by the standard analyzer. 
+
 
 ```python
 index_name = "metadata"
