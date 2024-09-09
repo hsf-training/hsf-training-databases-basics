@@ -1,6 +1,6 @@
 [![HSF Training Center][training-center-badge]][hsf-training-center]
 <!-- ALL-CONTRIBUTORS-BADGE:START - Do not remove or modify this section -->
-[![All Contributors](https://img.shields.io/badge/all_contributors-6-orange.svg?style=flat-square)](#contributors-)
+[![All Contributors](https://img.shields.io/badge/all_contributors-7-orange.svg?style=flat-square)](#contributors-)
 <!-- ALL-CONTRIBUTORS-BADGE:END -->
 [![Upcoming Events][schools-badge]][schools]
 [![Twitter Follow][twitter-badge]][twitter]
@@ -82,6 +82,7 @@ the content of the lesson:
       <td align="center" valign="top" width="14.28%"><a href="https://github.com/aoanla"><img src="https://avatars.githubusercontent.com/u/5970733?v=4?s=100" width="100px;" alt="Sam Skipsey"/><br /><sub><b>Sam Skipsey</b></sub></a><br /><a href="#content-aoanla" title="Content">🖋</a></td>
       <td align="center" valign="top" width="14.28%"><a href="http://guillermofidalgo.github.io"><img src="https://avatars.githubusercontent.com/u/17858942?v=4?s=100" width="100px;" alt="Guillermo A. Fidalgo-Rodríguez"/><br /><sub><b>Guillermo A. Fidalgo-Rodríguez</b></sub></a><br /><a href="#content-GuillermoFidalgo" title="Content">🖋</a></td>
       <td align="center" valign="top" width="14.28%"><a href="https://github.com/vlukashenko"><img src="https://avatars.githubusercontent.com/u/24569428?v=4?s=100" width="100px;" alt="Lera Lukashenko (Valeriia Lukashenko)"/><br /><sub><b>Lera Lukashenko (Valeriia Lukashenko)</b></sub></a><br /><a href="#content-vlukashenko" title="Content">🖋</a></td>
+      <td align="center" valign="top" width="14.28%"><a href="https://github.com/mambelli"><img src="https://avatars.githubusercontent.com/u/1558058?v=4?s=100" width="100px;" alt="Marco Mambelli"/><br /><sub><b>Marco Mambelli</b></sub></a><br /><a href="#content-mambelli" title="Content">🖋</a></td>
     </tr>
   </tbody>
 </table>
