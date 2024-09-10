@@ -41,6 +41,46 @@ We will first create a database named ``metadata`` in our mysql server.
 CREATE DATABASE metadata;
 ```
 
+> ## Case sensitivity in MySQL
+>In MySQL, SQL commands are case-insensitive. In other words, `CREATE DATABASE metadata` is the same as `create database metadata`.
+>
+>However, it is a common practice to write SQL commands in uppercase
+>to distinguish them from table and column names, which are case-sensitive.
+{: .callout}
+
+You can list all the databases by using the command
+```sql
+SHOW DATABASES;
+```
+~~~
++--------------------+
+| Database           |
++--------------------+
+| information_schema |
+| metadata           |
+| mysql              |
+| performance_schema |
+| sys                |
++--------------------+
+~~~
+{: .output}
+
+It shows that the database "metadata" is created.
+
+> ## What are those other databases?
+>
+>By default, MySQL comes with several databases that serve specific purposes. We will not go into details of each database,
+>but here is a brief overview:
+>
+> - `mysql`: This database contains user account information and privileges
+> - `information_schema`: Contains metadata about all the other databases in the MySQL server
+> - `performance_schema`: Contains performance metrics for the MySQL server
+> - `sys`: Used for tuning and diagnosis use cases
+>
+> You can read more about these databases in the [MySQL documentation](https://dev.mysql.com/doc/refman/8.0/en/information-schema.html).
+> For now it is not necessary to understand them in detail.
+{: .callout}
+
 To work with a specific database, you can use the USE command. For instance, to select the "metadata" database:
 ```sql
 USE metadata;
@@ -85,9 +125,16 @@ CREATE TABLE dataset (
     collision_energy INT NOT NULL
 );
 ```
+
+Notice we have defined `id` as the primary key with the `AUTO_INCREMENT` attribute.
+This means that the `id` column will automatically generate a unique value for each new record added to the table.
+
+The `PRIMARY KEY` means that the `id` column will be the unique identifier for each record in the table. Additionally,
+a primary key enhances the performance of cross-referencing between tables (we will look at this in more detail in the next episode).
+
 You can see the table and corresponding columns by using the command
 ```sql
-SHOW COLUMNS FROM dataset;
+DESCRIBE dataset;
 ```
 ~~~
 +------------------+--------------+------+-----+---------+----------------+
@@ -185,7 +232,10 @@ SELECT filename FROM dataset WHERE run_number > 50 AND collision_type='pp';
 {: .challenge}
 
 ## UPDATE
-The UPDATE command is used to make changes to existing record. For example, if you want to update the "collision_type" and "collision_energy" for a specific record, you can use:
+
+The UPDATE command is used to make changes to existing record.
+
+For example, if you want to update the "collision_type" and "collision_energy" for a specific record, you can use:
 
 ```sql
 UPDATE dataset
@@ -219,8 +269,23 @@ WHERE filename = 'expx.myfile1.root';
 {: .challenge}
 
 ## DELETE
-The DELETE command is used to remove record from a table. To delete a record with a specific filename, you can use:
+
+The DELETE command is used to remove a row from a table.
+
+For example, to delete a record with a specific filename you can use:
 ```sql
 DELETE FROM dataset
 WHERE filename = 'expx.myfile2.root';
 ```
+
+>## Be careful with UPDATE and DELETE without WHERE!
+>Very important: if you omit the `WHERE` clause in an `UPDATE` or `DELETE` statement, you will update or delete ALL records in the table!
+>
+> For example, the following command
+> ```sql
+> DELETE FROM dataset;
+> ```
+> will delete all records in the `dataset` table.
+>
+>This can have unintended consequences, so be cautious when using these commands.
+{: .callout}
