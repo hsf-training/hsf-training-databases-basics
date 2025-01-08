@@ -27,13 +27,28 @@ Here are some of the core SQL commands that you'll use in MySQL:
 - `UPDATE`: Modify existing data in a table.
 - `DELETE`: Remove data from a table.
 
-## Setting up for sql commands
-In the terminal , run the following command
+## Setting up a client for sql commands
+
+In the terminal , run the following command to start the mysql client inside the Docker container:
 ~~~bash
-docker exec -it metadata bash -c "mysql -uroot -pmypassword"
+docker exec -it myfirst-sqlserver bash -c "mysql -uroot -pmypassword"
 ~~~
 Then you will see mysql command prompt as ``mysql>`` . All the sql command has to be typed in this command prompt.
 
+> # Using a MySQL client in the host
+> If you want to use a MySQL client in the host, you can install it (e.g., `mysql-client` package in Ubuntu)
+> and connect to the MySQL server running in the Docker container.
+> ```bash
+> mysql -uroot -pmypassword -P 3306 --protocol=tcp
+> ```
+> Notice that you need to specify the port number and the protocol to connect to the MySQL server running in the Docker container. See the
+> details of the Docker container hosting the MySQL server by running the command `docker ps`:
+> ```bash
+>  docker ps
+> CONTAINER ID   IMAGE     COMMAND                  CREATED         STATUS         PORTS                               NAMES
+> f86b66cc36bf   mysql     "docker-entrypoint.s…"   2 minutes ago   Up 2 minutes   0.0.0.0:3306->3306/tcp, 33060/tcp   myfirst-sqlserver
+>```
+{: .callout}
 
 ## Create a database.
 We will first create a database named ``metadata`` in our mysql server.
