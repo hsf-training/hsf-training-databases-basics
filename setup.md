@@ -44,6 +44,18 @@ you should see the mysql prompt as ``mysql>``. If yes, then everything is workin
 
 You can type ``exit;`` in the mysql command prompt to exit.
 
+> ## Stopping and starting the MySQL server
+> If you want to stop the Docker container that hosts MySQL server to continue working later, execute the following command:
+> ```bash
+> docker stop myfirst-sqlserver
+> ```
+> And the container will be stopped. To start the container again, execute the following command:
+> ```bash
+> docker start myfirst-sqlserver
+> ```
+>
+> You can learn more about Docker commands at the [HSF Introduction to Docker and Podman](https://hsf-training.github.io/hsf-training-docker).
+{: .callout}
 
 ## Option 2: Setup a MySQL server via Apptainer
 
