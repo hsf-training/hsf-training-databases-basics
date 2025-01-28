@@ -13,15 +13,57 @@ keypoints:
 - ""
 ---
 
+# Lesson: Introduction to Conditions Databases in HEP
+
+## Introduction
+
+In high-energy physics, conditions databases (CDBs) play a critical role in managing non-event data. This includes calibration constants, alignment parameters, and detector conditions, which evolve over time. These databases ensure that analysis software can access the correct calibration and alignment data corresponding to the detector's state at any given time, enabling accurate physics measurements.
+
+The key objects in CDBs include **Global Tags**, **Payloads**, and **Interval of Validity (IOVs)**. Together, these elements create a framework for managing and retrieving time-dependent data.
+
+## Key Concepts
+
+### Payloads
+
+A **Payload** contains the actual conditions data, such as calibration constants or alignment parameters. A Payload represents the actual conditions data, such as calibration constants or alignment parameters. Typically, a payload is stored as a file on the filesystem, accessible through a specific path and filename or URL. The Conditions Database (CDB) manages only the metadata associated with these files, rather than the files themselves. In the CDB, the Payload object is essentially the URL pointing to the file's location, enabling efficient retrieval without directly handling the data.
+
+### PayloadTypes
+
+A **PayloadType** represents a classification for grouping related payloads that belong to the same category of conditions, such as alignment parameters, calibration constants, or detector settings. By organizing payloads under a common type, the Conditions Database simplifies data retrieval and management.
+
+This grouping ensures that, in most cases, only one payload per system is required for a specific query. For example, when retrieving alignment data for a particular detector component, you typically need data corresponding to a specific run number. The system can efficiently filter and return only the relevant payload for that time range, rather than fetching all payloads across all time intervals. This approach enhances consistency, optimizes performance, and simplifies the management of multiple payloads for similar conditions.
+
+### Interval of Validity (IOV)
+
+An **IOV** defines the time range during which a particular payload is valid. It is typically specified in terms of run numbers, timestamps, or lumiblocks, ensuring that the correct data is applied for a given detector state.
+
+### Global Tags
+
+A **Global Tag** is a label that identifies a consistent set of conditions data. It provides a snapshot of the detector state by pointing to specific versions of payloads for different time intervals. Global Tags simplify data retrieval by offering a single entry point for accessing coherent sets of conditions.
+
+### Connections Between Objects
+
+- A **Global Tag** serves as a grouping mechanism that maps to multiple payloads, which are organized by **PayloadType**. Each **PayloadType** groups related payloads (e.g., alignment or calibration constants) to simplify data retrieval.
+- Each **Payload** represents a specific piece of conditions data and is valid for the **Interval of Validity (IOV)** associated with it. This ensures that the correct payload is applied for a given run or timestamp.
+- During data processing, the Conditions Database (CDB) retrieves the appropriate payload by matching the IOV to the required run or timestamp, ensuring consistency and accuracy.
+
++-----------+   1 ║║   *    +-------------+   1 ║║   *    +------------+
+| GlobalTag |──────────────►| PayloadType |──────────────►| PayloadIOV |
++-----------+               +-------------+               +------------+
 
 
-# Conditions Database Example Using SQLAlchemy
+For simplification, in the following example, we work with three objects:
+1. **GlobalTag**: Groups a collection of **PayloadTypes**.
+2. **PayloadType**: Groups related payloads of the same type (e.g., alignment, calibration) and organizes them for specific conditions.
+3. **PayloadIOV**: Combines the payload metadata with its validity range (IOV) and provides a URL pointing to the payload file. The system assumes that conditions of the same type may change over time with new IOVs. As a result, the URL pointing to the payload file updates to reflect the new payload, ensuring the correct data is used for processing.
 
-This lesson demonstrates how to create a simple Conditions Database using SQLAlchemy in Python.
+## Conditions Database Example Using SQLAlchemy
+
+This example demonstrates how to create a simple Conditions Database using SQLAlchemy in Python.
 We will define three tables: `GlobalTag`, `PayloadType`, and `PayloadIOV`, and establish relationships
 between them. We will then add example data and query the database to retrieve specific entries.
 
-## Imports
+### Imports
 First, we import the necessary modules from SQLAlchemy.
 
 ```python
@@ -29,7 +71,7 @@ from sqlalchemy import create_engine, Column, Integer, String, ForeignKey
 from sqlalchemy.orm import declarative_base, sessionmaker, relationship
 ```
 
-## Define ORM Models
+### Define ORM Models
 We define our ORM models: `GlobalTag`, `PayloadType`, and `PayloadIOV`, along with the necessary relationships.
 ```python
 from sqlalchemy.sql import func, and_
@@ -47,7 +89,7 @@ Session = sessionmaker(bind=engine)
 session = Session()
 Base = declarative_base()
 ```
-## Define Tables
+### Define Tables
 We define all the tables in the database.
 
 ```python
@@ -82,7 +124,7 @@ class PayloadIOV(Base):
     # Relationship to PayloadType
     payload_type = relationship("PayloadType", back_populates="payload_iovs")
 ```
-## Create Tables
+### Create Tables
 We create all the tables in the database.
 
 ```python
@@ -90,7 +132,7 @@ We create all the tables in the database.
 Base.metadata.drop_all(engine)
 Base.metadata.create_all(engine)
 ```
-## Adding Example Data
+### Adding Example Data
 We add some example data to the database for `GlobalTag`, `PayloadType`, and `PayloadIOV`.
 
 ```python
@@ -132,7 +174,7 @@ session.add_all(daq_payload_iovs)
 session.add_all(dcs_payload_iovs)
 session.commit()
 ```
-## Query the Database
+### Query the Database
 Finally, we query the database to get the latest `PayloadIOV` entries for each `PayloadType` for a specific `GlobalTag` and IOV.
 
 ```python
