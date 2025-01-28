@@ -47,17 +47,17 @@ A **Global Tag** is a label that identifies a consistent set of conditions data.
 
 - A **Global Tag** serves as a grouping mechanism that maps to multiple payloads, which are organized by **PayloadType**. Each **PayloadType** groups related payloads (e.g., alignment or calibration constants) to simplify data retrieval.
 - Each **Payload** represents a specific piece of conditions data and is valid for the **Interval of Validity (IOV)** associated with it. This ensures that the correct payload is applied for a given run or timestamp.
-- During data processing, the Conditions Database (CDB) retrieves the appropriate payload by matching the IOV to the required run or timestamp, ensuring consistency and accuracy.
+- During data processing, the CDB retrieves the appropriate payload by matching the **IOV** to the required run or timestamp, ensuring consistency and accuracy.
 
 ```mermaid
 erDiagram
-    GlobalTag ||--o{ PayloadType : has
-    PayloadType ||--o{ PayloadIOV : contains
+    GlobalTag ||--o{ PayloadType : groups
+    PayloadType ||--o{ PayloadIOV : groups
 ```
 
 For simplification, in the following example, we work with three objects:
 
-1. **GlobalTag**: Serves as a grouping mechanism for a collection of **PayloadTypes**. In the diagram, this relationship is depicted as a 1-to-many connection, indicating that a single **GlobalTag** can aggregate multiple **PayloadTypes**, each representing a distinct category of conditions. This relationship is implemented in the database by having a foreign key in the **PayloadType** table referencing the **GlobalTag** ID.
+1. **GlobalTag**: Contains a collection of **PayloadTypes**. In the diagram, this relationship is depicted as a 1-to-many connection, indicating that a single **GlobalTag** can aggregate multiple **PayloadTypes**, each representing a distinct category of conditions. This relationship is implemented in the database by having a foreign key in the **PayloadType** table referencing the **GlobalTag** ID.
 
 2. **PayloadType**: Groups related payloads of the same type (e.g., alignment, calibration) and organizes them for specific conditions. A single **PayloadType** can have multiple **PayloadIOVs** linked to it, representing the actual data for different validity ranges. This relationship is similarly implemented using a foreign key in the **PayloadIOV** table referencing the **PayloadType** ID.
 
