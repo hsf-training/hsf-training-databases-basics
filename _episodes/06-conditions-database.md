@@ -27,7 +27,7 @@ The key objects in CDBs include **Global Tags**, **Payloads**, and **Interval of
 
 ### Payloads
 
-A **Payload** contains the actual conditions data, such as calibration constants or alignment parameters. A Payload represents the actual conditions data, such as calibration constants or alignment parameters. Typically, a payload is stored as a file on the filesystem, accessible through a specific path and filename or URL. The Conditions Database (CDB) manages only the metadata associated with these files, rather than the files themselves. In the CDB, the Payload object is essentially the URL pointing to the file's location, enabling efficient retrieval without directly handling the data.
+A **Payload** contains the actual conditions data, such as calibration constants or alignment parameters. Typically, a payload is stored as a file on the filesystem, accessible through a specific path and filename or URL. The Conditions Database (CDB) manages only the metadata associated with these files, rather than the files themselves. In the CDB, the Payload object is essentially the URL pointing to the file's location, enabling efficient retrieval without directly handling the data.
 
 ### PayloadTypes
 
