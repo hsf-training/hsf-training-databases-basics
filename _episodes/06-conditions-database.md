@@ -57,7 +57,7 @@ erDiagram
 
 For simplification, in the following example, we work with three objects:
 
-1. **GlobalTag**: Serves as a grouping mechanism for a collection of **PayloadTypes**. In the diagram, this relationship is depicted as a 1-to-many connection (`||--o{`), indicating that a single **GlobalTag** can aggregate multiple **PayloadTypes**, each representing a distinct category of conditions. This relationship is implemented in the database by having a foreign key in the **PayloadType** table referencing the **GlobalTag** ID.
+1. **GlobalTag**: Serves as a grouping mechanism for a collection of **PayloadTypes**. In the diagram, this relationship is depicted as a 1-to-many connection, indicating that a single **GlobalTag** can aggregate multiple **PayloadTypes**, each representing a distinct category of conditions. This relationship is implemented in the database by having a foreign key in the **PayloadType** table referencing the **GlobalTag** ID.
 
 2. **PayloadType**: Groups related payloads of the same type (e.g., alignment, calibration) and organizes them for specific conditions. A single **PayloadType** can have multiple **PayloadIOVs** linked to it, representing the actual data for different validity ranges. This relationship is similarly implemented using a foreign key in the **PayloadIOV** table referencing the **PayloadType** ID.
 
@@ -66,8 +66,8 @@ For simplification, in the following example, we work with three objects:
 > ### How to Read the Diagram
 >
 > The diagram visually represents the relationships between these objects. Each block corresponds to a database table, and the connections between them indicate the nature of their relationships:
-> - The relationship between **GlobalTag** and **PayloadType** (`||--o{`) shows that a single **GlobalTag** can group multiple **PayloadTypes**, but each **PayloadType** is associated with exactly one **GlobalTag** (1-to-many).
-> - Similarly, the relationship between **PayloadType** and **PayloadIOV** (`||--o{`) indicates that a single **PayloadType** can group multiple **PayloadIOVs**, but each **PayloadIOV** is tied to one specific **PayloadType**.
+> - The relationship between **GlobalTag** and **PayloadType**  shows that a single **GlobalTag** can group multiple **PayloadTypes**, but each **PayloadType** is associated with exactly one **GlobalTag** (1-to-many).
+> - Similarly, the relationship between **PayloadType** and **PayloadIOV**  indicates that a single **PayloadType** can group multiple **PayloadIOVs**, but each **PayloadIOV** is tied to one specific **PayloadType**.
 >
 > These relationships are implemented via foreign keys:
 > - The **PayloadType** table includes a foreign key to the **GlobalTag** table.
