@@ -1,16 +1,18 @@
 ---
 title: "Conditions Database Example Using SQLAlchemy"
-teaching: x
-exercises: x
+teaching: 1.5 hours
+exercises: 2
 questions:
-- ""
-- ""
+- "What are the key objects in a Conditions Database and how are they related?"
+- "How can you use SQLAlchemy to model and query a simple Conditions Database?"
 objectives:
-- ""
-- ""
+- "Understand the role of Conditions Databases in high-energy physics."
+- "Learn the key concepts: Global Tags, PayloadTypes, Payloads, and IOVs."
+- "Model relationships between these objects using SQLAlchemy."
+- "Perform basic queries to retrieve conditions data efficiently."
 keypoints:
-- ""
-- ""
+- "Conditions Databases store metadata for time-dependent data like alignment and calibration."
+- "Global Tags group related PayloadTypes, which contain Payloads valid for specific IOVs."
 ---
 
 # Lesson: Introduction to Conditions Databases in HEP
@@ -41,7 +43,7 @@ An **IOV** defines the time range during which a particular payload is valid. It
 
 A **Global Tag** is a label that identifies a consistent set of conditions data. It provides a snapshot of the detector state by pointing to specific versions of payloads for different time intervals. Global Tags simplify data retrieval by offering a single entry point for accessing coherent sets of conditions.
 
-### Connections Between Objects
+## Connections Between Objects
 
 - A **Global Tag** serves as a grouping mechanism that maps to multiple payloads, which are organized by **PayloadType**. Each **PayloadType** groups related payloads (e.g., alignment or calibration constants) to simplify data retrieval.
 - Each **Payload** represents a specific piece of conditions data and is valid for the **Interval of Validity (IOV)** associated with it. This ensures that the correct payload is applied for a given run or timestamp.
@@ -51,11 +53,37 @@ A **Global Tag** is a label that identifies a consistent set of conditions data.
 | GlobalTag |──────────────►| PayloadType |──────────────►| PayloadIOV |
 +-----------+               +-------------+               +------------+
 
-
 For simplification, in the following example, we work with three objects:
-1. **GlobalTag**: Groups a collection of **PayloadTypes**.
-2. **PayloadType**: Groups related payloads of the same type (e.g., alignment, calibration) and organizes them for specific conditions.
+
+1. **GlobalTag**: Serves as a grouping mechanism for a collection of **PayloadTypes**. In the diagram, this relationship is depicted as a 1-to-many connection (`1║║*`), indicating that a single **GlobalTag** can aggregate multiple **PayloadTypes**, each representing a distinct category of conditions. This relationship is implemented in the database by having a foreign key in the **PayloadType** table referencing the **GlobalTag** ID.
+
+2. **PayloadType**: Groups related payloads of the same type (e.g., alignment, calibration) and organizes them for specific conditions. A single **PayloadType** can have multiple **PayloadIOVs** linked to it, representing the actual data for different validity ranges. This relationship is similarly implemented using a foreign key in the **PayloadIOV** table referencing the **PayloadType** ID.
+
 3. **PayloadIOV**: Combines the payload metadata with its validity range (IOV) and provides a URL pointing to the payload file. The system assumes that conditions of the same type may change over time with new IOVs. As a result, the URL pointing to the payload file updates to reflect the new payload, ensuring the correct data is used for processing.
+
+> ### How to Read the Diagram
+>
+> The diagram visually represents the relationships between these objects. Each block corresponds to a database table, and the arrows indicate the direction of the relationship:
+> - The arrow from **GlobalTag** to **PayloadType** shows that a single **GlobalTag** can reference multiple **PayloadTypes**, but each **PayloadType** is associated with exactly one **GlobalTag** (1-to-many).
+> - Similarly, the arrow from **PayloadType** to **PayloadIOV** illustrates that a single **PayloadType** can reference multiple **PayloadIOVs**, but each **PayloadIOV** is tied to one specific **PayloadType**.
+>
+> These relationships are implemented via foreign keys:
+> - The **PayloadType** table includes a foreign key to the **GlobalTag** table.
+> - The **PayloadIOV** table includes a foreign key to the **PayloadType** table.
+>
+> This structure ensures that data integrity is maintained and that each object is correctly linked in the database schema.
+
+## Exercises
+
+1. **Exercise 1: Reproducing the Example**
+   - Follow the provided example in the next section to define the relationships between `GlobalTag`, `PayloadType`, and `PayloadIOV` using SQLAlchemy.
+   - Recreate the database structure, populate it with the example data for alignment and calibration conditions, and verify that the tables and relationships are correctly implemented.
+
+2. **Exercise 2: Querying Conditions Data**
+   - Write a query to retrieve the latest `PayloadIOV` for a specific `GlobalTag` and `IOV`.
+   - Extend the query to retrieve all payloads for a given `PayloadType`.
+
+These exercises reinforce the concepts and demonstrate how Conditions Databases support real-world data management in high-energy physics experiments.
 
 ## Conditions Database Example Using SQLAlchemy
 
@@ -137,41 +165,41 @@ We add some example data to the database for `GlobalTag`, `PayloadType`, and `Pa
 
 ```python
 # Adding example data
-global_tag = GlobalTag(name="DetectorConfiguration")
+global_tag = GlobalTag(name="Conditions")
 session.add(global_tag)
 
-daq_payload_type = PayloadType(name="DAQSettings", global_tag=global_tag)
-dcs_payload_type = PayloadType(name="DCSSettings", global_tag=global_tag)
+calib_payload_type = PayloadType(name="Calibrations", global_tag=global_tag)
+align_payload_type = PayloadType(name="Alignment", global_tag=global_tag)
 
 session.add(daq_payload_type)
 session.add(dcs_payload_type)
 
-daq_payload_iovs = [
+calib_payload_iovs = [
     PayloadIOV(
-        payload_url="http://example.com/daq1", iov=1, payload_type=daq_payload_type
+        payload_url="http://example.com/calib_v1", iov=1, payload_type=calib_payload_type
     ),
     PayloadIOV(
-        payload_url="http://example.com/daq2", iov=2, payload_type=daq_payload_type
+        payload_url="http://example.com/calib_v2", iov=2, payload_type=calib_payload_type
     ),
     PayloadIOV(
-        payload_url="http://example.com/daq3", iov=3, payload_type=daq_payload_type
-    ),
-]
-
-dcs_payload_iovs = [
-    PayloadIOV(
-        payload_url="http://example.com/dcs1", iov=1, payload_type=dcs_payload_type
-    ),
-    PayloadIOV(
-        payload_url="http://example.com/dcs2", iov=2, payload_type=dcs_payload_type
-    ),
-    PayloadIOV(
-        payload_url="http://example.com/dcs3", iov=3, payload_type=dcs_payload_type
+        payload_url="http://example.com/calib_v3", iov=3, payload_type=calib_payload_type
     ),
 ]
 
-session.add_all(daq_payload_iovs)
-session.add_all(dcs_payload_iovs)
+align_payload_iovs = [
+    PayloadIOV(
+        payload_url="http://example.com/align_v1", iov=1, payload_type=align_payload_type
+    ),
+    PayloadIOV(
+        payload_url="http://example.com/align_v2", iov=2, payload_type=align_payload_type
+    ),
+    PayloadIOV(
+        payload_url="http://example.com/align_v3", iov=3, payload_type=align_payload_type
+    ),
+]
+
+session.add_all(calib_payload_iovs)
+session.add_all(align_payload_iovs)
 session.commit()
 ```
 ### Query the Database
@@ -180,7 +208,7 @@ Finally, we query the database to get the latest `PayloadIOV` entries for each `
 ```python
 # Query to get the last PayloadIOV entries for each PayloadType for a specific GlobalTag and IOV
 requested_iov = 2
-requested_gt = "DetectorConfiguration"
+requested_gt = "Conditions"
 
 # Subquery to find the maximum IOV for each PayloadType
 subquery = (
@@ -219,5 +247,5 @@ for global_tag_name, payload_type_name, payload_url, max_iov in query:
     )
 ```
 
-    GlobalTag: DetectorConfiguration, PayloadType: DAQSettings, PayloadIOV URL: http://example.com/daq2, IOV: 2
-    GlobalTag: DetectorConfiguration, PayloadType: DCSSettings, PayloadIOV URL: http://example.com/dcs2, IOV: 2
+    GlobalTag: Conditions, PayloadType: Calibrations, PayloadIOV URL: http://example.com/calib_v2, IOV: 2
+    GlobalTag: Conditions, PayloadType: Alignment, PayloadIOV URL: http://example.com/align_v2, IOV: 2
