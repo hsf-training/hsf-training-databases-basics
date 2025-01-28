@@ -53,6 +53,7 @@ A **Global Tag** is a label that identifies a consistent set of conditions data.
 erDiagram
     GlobalTag ||--o{ PayloadType : has
     PayloadType ||--o{ PayloadIOV : contains
+```
 
 For simplification, in the following example, we work with three objects:
 
