@@ -1,5 +1,5 @@
 ---
-title: "Conditions Database Example Using SQLAlchemy"
+title: "Introduction to Conditions Databases in HEP"
 teaching: 1.5 hours
 exercises: 2
 questions:
