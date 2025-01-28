@@ -178,22 +178,32 @@ session.add(align_payload_type)
 
 calib_payload_iovs = [
     PayloadIOV(
-        payload_url="http://example.com/calib_v1.root", iov=1, payload_type=calib_payload_type
+        payload_url="http://example.com/calib_v1.root",
+        iov=1,
+        payload_type=calib_payload_type,
     ),
     PayloadIOV(
-        payload_url="http://example.com/calib_v2.root", iov=2, payload_type=calib_payload_type
+        payload_url="http://example.com/calib_v2.root",
+        iov=2,
+        payload_type=calib_payload_type,
     ),
     PayloadIOV(
-        payload_url="http://example.com/calib_v3.root", iov=3, payload_type=calib_payload_type
+        payload_url="http://example.com/calib_v3.root",
+        iov=3,
+        payload_type=calib_payload_type,
     ),
 ]
 
 align_payload_iovs = [
     PayloadIOV(
-        payload_url="http://example.com/align_v1.root", iov=1, payload_type=align_payload_type
+        payload_url="http://example.com/align_v1.root",
+        iov=1,
+        payload_type=align_payload_type,
     ),
     PayloadIOV(
-        payload_url="http://example.com/align_v2.root", iov=3, payload_type=align_payload_type
+        payload_url="http://example.com/align_v2.root",
+        iov=3,
+        payload_type=align_payload_type,
     ),
 ]
 
