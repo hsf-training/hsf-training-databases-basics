@@ -82,8 +82,7 @@ For simplification, in the following example, we work with three objects:
    - Recreate the database structure, populate it with the example data for alignment and calibration conditions, and verify that the tables and relationships are correctly implemented.
 
 2. **Exercise 2: Querying Conditions Data**
-   - Write a query to retrieve the latest `PayloadIOV` for a specific `GlobalTag` and `IOV`.
-   - Extend the query to retrieve all payloads for a given `PayloadType`.
+   - Write a query to retrieve for a specific `GlobalTag` the names of the `PayloadTypes` and summary number of `PayloadIOV`s per type.
 
 These exercises reinforce the concepts and demonstrate how Conditions Databases support real-world data management in high-energy physics experiments.
 
