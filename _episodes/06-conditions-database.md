@@ -27,11 +27,11 @@ The key objects in CDBs include **Global Tags**, **Payloads**, and **Interval of
 
 ### Payloads
 
-A **Payload** contains the actual conditions data, such as calibration constants or alignment parameters. Typically, a payload is stored as a file on the filesystem, accessible through a specific path and filename or URL. The Conditions Database (CDB) manages only the metadata associated with these files, rather than the files themselves. In the CDB, the Payload object is essentially the URL pointing to the file's location, enabling efficient retrieval without directly handling the data.
+A **Payload** contains the actual conditions data, such as calibration constants or alignment parameters. Typically, a payload is stored as a file on the filesystem, accessible through a specific path and filename or URL. The CDB manages only the metadata associated with these files, rather than the files themselves. In the CDB, the Payload object is essentially the URL pointing to the file's location, enabling efficient retrieval without directly handling the data.
 
 ### PayloadTypes
 
-A **PayloadType** represents a classification for grouping related payloads that belong to the same category of conditions, such as alignment parameters, calibration constants, or detector settings. By organizing payloads under a common type, the Conditions Database simplifies data retrieval and management.
+A **PayloadType** represents a classification for grouping related payloads that belong to the same category of conditions, such as alignment parameters, calibration constants, or detector settings. By organizing payloads under a common type, the CDB simplifies data retrieval and management.
 
 This grouping ensures that, in most cases, only one payload per system is required for a specific query. For example, when retrieving alignment data for a particular detector component, you typically need data corresponding to a specific run number. The system can efficiently filter and return only the relevant payload for that time range, rather than fetching all payloads across all time intervals. This approach enhances consistency, optimizes performance, and simplifies the management of multiple payloads for similar conditions.
 
@@ -87,7 +87,7 @@ These exercises reinforce the concepts and demonstrate how Conditions Databases 
 
 ## Conditions Database Example Using SQLAlchemy
 
-This example demonstrates how to create a simple Conditions Database using SQLAlchemy in Python.
+This example demonstrates how to create a simple CDB using SQLAlchemy in Python.
 We will define three tables: `GlobalTag`, `PayloadType`, and `PayloadIOV`, and establish relationships
 between them. We will then add example data and query the database to retrieve specific entries.
 
@@ -171,30 +171,27 @@ session.add(global_tag)
 calib_payload_type = PayloadType(name="Calibrations", global_tag=global_tag)
 align_payload_type = PayloadType(name="Alignment", global_tag=global_tag)
 
-session.add(daq_payload_type)
-session.add(dcs_payload_type)
+session.add(calib_payload_type)
+session.add(align_payload_type)
 
 calib_payload_iovs = [
     PayloadIOV(
-        payload_url="http://example.com/calib_v1", iov=1, payload_type=calib_payload_type
+        payload_url="http://example.com/calib_v1.root", iov=1, payload_type=calib_payload_type
     ),
     PayloadIOV(
-        payload_url="http://example.com/calib_v2", iov=2, payload_type=calib_payload_type
+        payload_url="http://example.com/calib_v2.root", iov=2, payload_type=calib_payload_type
     ),
     PayloadIOV(
-        payload_url="http://example.com/calib_v3", iov=3, payload_type=calib_payload_type
+        payload_url="http://example.com/calib_v3.root", iov=3, payload_type=calib_payload_type
     ),
 ]
 
 align_payload_iovs = [
     PayloadIOV(
-        payload_url="http://example.com/align_v1", iov=1, payload_type=align_payload_type
+        payload_url="http://example.com/align_v1.root", iov=1, payload_type=align_payload_type
     ),
     PayloadIOV(
-        payload_url="http://example.com/align_v2", iov=2, payload_type=align_payload_type
-    ),
-    PayloadIOV(
-        payload_url="http://example.com/align_v3", iov=3, payload_type=align_payload_type
+        payload_url="http://example.com/align_v2.root", iov=3, payload_type=align_payload_type
     ),
 ]
 
@@ -247,5 +244,5 @@ for global_tag_name, payload_type_name, payload_url, max_iov in query:
     )
 ```
 
-    GlobalTag: Conditions, PayloadType: Calibrations, PayloadIOV URL: http://example.com/calib_v2, IOV: 2
-    GlobalTag: Conditions, PayloadType: Alignment, PayloadIOV URL: http://example.com/align_v2, IOV: 2
+    GlobalTag: Conditions, PayloadType: Calibrations, PayloadIOV URL: http://example.com/calib_v2.root, IOV: 2
+    GlobalTag: Conditions, PayloadType: Alignment, PayloadIOV URL: http://example.com/align_v1.root, IOV: 1
