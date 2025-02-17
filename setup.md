@@ -1,6 +1,15 @@
 ---
 title: Setup
 ---
+
+# Using GitHub Codespaces (Recommended)
+
+Simply click on the button below and then click on ``Create codespace``. The only requirement is a GitHub account.
+
+[![Open in GitHub Codespaces](https://github.com/codespaces/badge.svg)](https://codespaces.new/hsf-training/hsf-training-databases-basics){:target="_blank"}
+
+You should have a new tab with VSCode running and everything pre-installed. The passwords for MYSQL and Opensearch will be ``HSFtraining1``. You can skip the rest of this page.
+
 # MYSQL setup
 
 We recommend using a Docker container to run your first MySQL server. This is the easiest way to get started.
