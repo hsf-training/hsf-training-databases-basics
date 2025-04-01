@@ -8,7 +8,17 @@ Simply click on the button below and then click on ``Create codespace``. The onl
 
 [![Open in GitHub Codespaces](https://github.com/codespaces/badge.svg)](https://codespaces.new/hsf-training/hsf-training-databases-basics){:target="_blank"}
 
-You should have a new tab with VSCode running and everything pre-installed. The passwords for MYSQL and Opensearch will be ``HSFtraining1``. You can skip the rest of this page.
+You should have a new tab with VSCode running and everything pre-installed. The passwords for MYSQL and Opensearch will be ``HSFtraining1``.
+
+The setup will be as if you followed Option 1 below, so you can test that everything is up and running by using.
+```bash
+docker exec -it myfirst-sqlserver bash -c "mysql -uroot -p"
+```
+and entering ``HSFtraining1`` as the password when prompted. You should see the mysql prompt as ``mysql>``. If yes, then everything is working.
+
+You can type ``exit;`` in the mysql command prompt to exit.
+
+You can skip the rest of this page.
 
 # MYSQL setup
 
