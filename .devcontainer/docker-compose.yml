@@ -1,5 +1,6 @@
 services:
   devcontainer:
+      platform: linux/x86_64
       image: mcr.microsoft.com/devcontainers/universal:2
       container_name: devcontainer
       volumes:
