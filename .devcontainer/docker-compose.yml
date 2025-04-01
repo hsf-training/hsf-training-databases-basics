@@ -1,0 +1,38 @@
+services:
+  devcontainer:
+      platform: linux/x86_64
+      image: mcr.microsoft.com/devcontainers/universal:2
+      container_name: devcontainer
+      volumes:
+        - ../..:/workspaces:cached
+        - type: bind
+          source: /var/run/docker.sock
+          target: /var/run/docker.sock
+      command: sleep infinity
+      network_mode: "host"
+      depends_on:
+        - mysql
+        - opensearch
+
+  mysql:
+    image: mysql:latest
+    restart: always
+    container_name: myfirst-sqlserver
+    environment:
+      MYSQL_USER: hsf
+      MYSQL_PASSWORD: HSFtraining1
+      MYSQL_DATABASE: demo
+      MYSQL_ROOT_PASSWORD: HSFtraining1
+    ports:
+      - 3306:3306
+
+  opensearch:
+    image: opensearchproject/opensearch:latest
+    restart: always
+    container_name: opensearch-server
+    environment:
+      discovery.type: single-node
+      OPENSEARCH_INITIAL_ADMIN_PASSWORD: HSFtraining1
+    ports:
+      - 9200:9200
+      - 9600:9600
