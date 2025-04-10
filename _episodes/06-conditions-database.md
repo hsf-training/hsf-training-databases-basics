@@ -49,11 +49,12 @@ A **Global Tag** is a label that identifies a consistent set of conditions data.
 - Each **Payload** represents a specific piece of conditions data and is valid for the **Interval of Validity (IOV)** associated with it. This ensures that the correct payload is applied for a given run or timestamp.
 - During data processing, the CDB retrieves the appropriate payload by matching the **IOV** to the required run or timestamp, ensuring consistency and accuracy.
 
-```mermaid
-erDiagram
-    GlobalTag ||--o{ PayloadType : groups
-    PayloadType ||--o{ PayloadIOV : groups
-```
+<figure>
+    <img src="../fig/cdb_diagram.png" alt="CDB schema diagram" width="250">
+    <figcaption>CDB schema diagram</figcaption>
+</figure>
+<br><br>
+
 
 For simplification, in the following example, we work with three objects:
 
