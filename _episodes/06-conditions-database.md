@@ -51,8 +51,8 @@ A **Global Tag** is a label that identifies a consistent set of conditions data.
 
 ```mermaid
 erDiagram
-    GlobalTag ||--o{ PayloadType : groups
-    PayloadType ||--o{ PayloadIOV : groups
+    GlobalTag ||--o{ PayloadType : aggregates
+    PayloadType ||--o{ PayloadIOV : aggregates
 ```
 
 For simplification, in the following example, we work with three objects:
