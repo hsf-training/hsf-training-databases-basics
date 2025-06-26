@@ -5,27 +5,49 @@ exercises: x
 ---
 
 
-Grafana Setup: 
-Add MySQL Data SourceNow, let's configure Grafana to connect to your MySQL database.
-- Log in to Grafana:Open your web browser and navigate to your Grafana instance (usually http://localhost:3000).
-- Log in with an administrator account.
-- Add Data Source:In the left-hand navigation menu, hover over the Connections icon (plug icon) and click Data sources.
-- Click the Add new data source button.
-  - In the "Add data source" list, search for and select MySQL.
-  - Configure Data Source Settings:
-    - `Name`: A descriptive name for your data source (e.g., My MySQL DB, Production MySQL).
-    - `Host`: The hostname or IP address of your MySQL server (e.g., localhost:3306). If you specify the port in the host, you can leave the "Port" field blank.
-    - `Port`: The port your MySQL server is listening on (default is 3306).
-    - `Database`: The name of the database you want to connect to (e.g., your_database_name).
-    - `User`: The username created for Grafana (e.g., grafana_user).
-    - `Password`: The password for the Grafana user (your_secure_password).
-    - SSL Mode:
-      - `disable`: No SSL encryption (not recommended for production).
-      - `require`: Encrypts communication, but doesn't verify the server certificate.
-      - `verify-ca`: Encrypts and verifies the server certificate against a provided CA certificate.
-      - `verify-full`: Encrypts, verifies the server certificate against a provided CA, and checks the hostname.For basic setup on a trusted local network, disable might be used for testing, but require or verify-ca/verify-full are highly recommended for production. If using verify-ca or verify-full, you'll need to upload the CA certificate.
-      - `Min time interval`: A default minimum time interval for queries, often 1m (1 minute) or 5s (5 seconds).
-      - `Max open connections`: Limit the number of open connections (default 10).
-      - `Max idle connections`: Number of idle connections to keep (default 10).
-      - `Connection max lifetime`: Maximum time a connection can be reused (default 14400s).
-  - Save & Test:Click the Save & Test button at the bottom.You should see a message confirming "Database Connection OK". If not, review your settings and check Grafana logs for more details.
+# Grafana Setup: Add MySQL Data Source (Local Testing)
+
+## 1. Log in to Grafana
+- Open your browser and go to [http://localhost:3000](http://localhost:3000).
+- Log in using your admin credentials.
+
+## 2. Add MySQL Data Source
+- In the left sidebar, hover over the **Connections** icon (plug icon), then click **Data sources**.
+- Click the **Add new data source** button.
+- In the list, search for and select **MySQL**.
+
+## 3. Configure Data Source Settings
+
+| Setting               | Value / Example                  | Notes                                                                 |
+|-----------------------|----------------------------------|-----------------------------------------------------------------------|
+| **Name**              | `My MySQL DB`                    | Descriptive name for your data source.                                |
+| **Host**              | `localhost`                      | Use IP or hostname. Port can be included here.                        |
+| **Port**              | `3306`                           | Leave blank if specified in `Host`. Default: `3306`.                  |
+| **Database**          | `your_database_name`             | Name of your MySQL database.                                          |
+| **User**              | `grafana_user`                   | MySQL user that Grafana will use.                                     |
+| **Password**          | `your_secure_password`           | Password for the MySQL user.                                          |
+| **SSL Mode**          | `disable` *(for testing only)*   | Use `require`, `verify-ca`, or `verify-full` for production.          |
+
+### 4. Optional Connection Settings (Defaults are usually fine)
+- **Min time interval:** `1m` or `5s`
+- **Max open connections:** `10`
+- **Max idle connections:** `10`
+- **Connection max lifetime:** `14400s`
+
+## 5. Save and Test
+- Click **Save & Test**.
+- You should see the message: ✅ `Database Connection OK`.
+
+## Notes
+- 🔒 **SSL Mode**:
+  - `disable`: No encryption. **Use only for local testing.**
+  - `require`: Encrypted connection, no certificate verification.
+  - `verify-ca`: Requires and verifies CA-signed cert.
+  - `verify-full`: Requires full cert validation and hostname match.
+
+- 📁 **For `verify-ca` or `verify-full`**, upload the CA certificate via Grafana UI.
+
+- ✅ If connection fails, check:
+  - MySQL is running and accessible from Grafana.
+  - Correct database/user/password.
+  - Grafana logs for detailed error messages.
