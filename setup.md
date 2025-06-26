@@ -163,3 +163,18 @@ To test that if everything is up and running, execute the following command:
 ```bash
 curl https://localhost:9200 -ku 'admin:<custom-admin-password>'
 ```
+
+
+# Grafana setup
+
+```bash
+docker run -d -p 3000:3000 --name=grafana -e "GF_SECURITY_ADMIN_USER=admin" -e "GF_SECURITY_ADMIN_PASSWORD=<custom-admin-password>" grafana/grafana-enterprise
+```
+Replace: `<custom-admin-password>` to a secure password of your choice.
+
+To test that if everything is up and running, execute the following command:
+```bash
+curl -u admin:<custom-admin-password> http://localhost:3000/api/search
+```
+
+and go to your browser and paste the url `http://localhost:3000/` and login with username `admin` and password `<custom-admin-password>` .

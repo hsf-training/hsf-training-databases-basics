@@ -36,3 +36,13 @@ services:
     ports:
       - 9200:9200
       - 9600:9600
+  
+  grafana:
+    image: grafana/grafana-enterprise
+    restart: always
+    container_name: grafana
+    environment:
+      GF_SECURITY_ADMIN_USER: admin
+      GF_SECURITY_ADMIN_PASSWORD: HSFtraining1
+    ports:
+      - 3000:3000

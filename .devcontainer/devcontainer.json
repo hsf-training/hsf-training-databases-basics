@@ -2,7 +2,7 @@
     "name": "Databases training",
     "dockerComposeFile": "docker-compose.yml",
     "service": "devcontainer",
-    "forwardPorts": [3306, 9200, 9600],
+    "forwardPorts": [3306, 9200, 9600, 3000],
     "portsAttributes": {
       "3306": {
         "label": "MySQL",
@@ -14,6 +14,10 @@
       },
       "9600": {
         "label": "OpenSearch",
+        "onAutoForward": "notify"
+      },
+      "3000": {
+        "label": "Grafana",
         "onAutoForward": "notify"
       }
     },
