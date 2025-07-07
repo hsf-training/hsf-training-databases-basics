@@ -1,38 +1,59 @@
 services:
   devcontainer:
-      platform: linux/x86_64
-      image: mcr.microsoft.com/devcontainers/universal:2
-      container_name: devcontainer
-      volumes:
-        - ../..:/workspaces:cached
-        - type: bind
-          source: /var/run/docker.sock
-          target: /var/run/docker.sock
-      command: sleep infinity
-      network_mode: "host"
-      depends_on:
-        - mysql
-        - opensearch
+    platform: linux/x86_64
+    image: docker:latest
+    container_name: devcontainer
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+    command: sleep infinity
+    network_mode: host
+    depends_on:
+      - mysql
+      - opensearch
+      - grafana
 
   mysql:
     image: mysql:latest
-    restart: always
     container_name: myfirst-sqlserver
+    restart: always
     environment:
-      MYSQL_USER: hsf
-      MYSQL_PASSWORD: HSFtraining1
-      MYSQL_DATABASE: demo
-      MYSQL_ROOT_PASSWORD: HSFtraining1
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
     ports:
-      - 3306:3306
+      - 3308:3308
+    volumes:
+      - mysql-data:/var/lib/mysql
 
   opensearch:
     image: opensearchproject/opensearch:latest
-    restart: always
     container_name: opensearch-server
+    restart: always
     environment:
       discovery.type: single-node
-      OPENSEARCH_INITIAL_ADMIN_PASSWORD: HSFtraining1
+      OPENSEARCH_INITIAL_ADMIN_PASSWORD: ${OPENSEARCH_ADMIN_PASSWORD}
+      # The line below is important to prevent a bootstrap check error.
+      OPENSEARCH_JAVA_OPTS: "-Xms512m -Xmx512m"
     ports:
       - 9200:9200
       - 9600:9600
+    volumes:
+      - opensearch-data:/usr/share/opensearch/data
+
+  grafana:
+    image: grafana/grafana-enterprise:latest
+    container_name: grafana
+    restart: always
+    environment:
+      GF_SECURITY_ADMIN_USER: ${GRAFANA_ADMIN_USER}
+      GF_SECURITY_ADMIN_PASSWORD: ${GRAFANA_ADMIN_PASSWORD}
+    ports:
+      - 3000:3000
+    volumes:
+      - grafana-data:/var/lib/grafana
+    depends_on:
+      - mysql
+      - opensearch
+
+volumes:
+  mysql-data:
+  opensearch-data:
+  grafana-data:
