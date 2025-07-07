@@ -2,8 +2,12 @@
     "name": "Databases training",
     "dockerComposeFile": "docker-compose.yml",
     "service": "devcontainer",
-    "forwardPorts": [3306, 9200, 9600],
+    "forwardPorts": [3000, 3306, 9200, 9600],
     "portsAttributes": {
+      "3000": {
+        "label": "Grafana",
+        "onAutoForward": "notify"
+      },
       "3306": {
         "label": "MySQL",
         "onAutoForward": "notify"
@@ -16,6 +20,5 @@
         "label": "OpenSearch",
         "onAutoForward": "notify"
       }
-    },
-    "postCreateCommand": "bash .devcontainer/setup.sh"
+    }
 }
