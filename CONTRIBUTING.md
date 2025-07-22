@@ -22,7 +22,7 @@ agrees to abide by our [code of conduct](CODE_OF_CONDUCT.md).
 The easiest way to get started is to file an issue
 to tell us about a mistake,
 some awkward wording,
-a factual error.
+or a factual error.
 This is a good way to introduce yourself
 and to meet some of our community members.
 
@@ -49,12 +49,12 @@ There are many ways to contribute,
 from writing new exercises and improving existing ones
 to updating or filling in the documentation
 and submitting [bug reports][issues]
-about things that do not work, aren not clear, or are missing.
+about things that do not work, are not clear, or are missing.
 If you are looking for ideas, please see the 'Issues' tab for
 a list of issues associated with this repository,
 or you may also look at all issues in [hsf-training][hsf-training-issues]
 
-There is also [a list][hsf-training-gfis] of all issues that are particularly easy and suitable
+There is also [a list](hsf-training-gfis) of all issues that are particularly easy and suitable
 for first contributions.
 
 Comments on issues and reviews of pull requests are just as welcome:
