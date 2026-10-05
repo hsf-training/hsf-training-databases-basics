@@ -41,8 +41,8 @@ By the end of this lesson you will be able to:
 Follow the instructions on the [Setup](setup.md) page before starting with the chapters.
 
 :::{note} About HSF Training
-This lesson is part of the [HEP Software Foundation (HSF) Training](https://hepsoftwarefoundation.org/training/curriculum.html)
-curriculum. Find more lessons and upcoming events in the
+This lesson is part of the [HEP Software Foundation (HSF) Training](https://hepsoftwarefoundation.org/activities/training.html)
+curriculum. Find more lessons in the
 [HSF Training Center](https://hepsoftwarefoundation.org/training/center.html).
 
 The lesson is developed by the community. Found a typo, or want to suggest an improvement? Please
