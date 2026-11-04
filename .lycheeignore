@@ -1,0 +1,4 @@
+# Hosts that block bots (403) but work in a browser.
+https://dev.mysql.com/doc/refman/8.0/en/information-schema.html
+https://dev.mysql.com/doc/refman/8.2/en/installing.html
+https://security.harvard.edu/use-strong-passwords
