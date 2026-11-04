@@ -79,7 +79,7 @@ You can learn more about Docker commands at the [HSF Introduction to Docker and 
 ## Option 2: Setup a MySQL server via Apptainer
 
 If you are working on institutional computers, then you might not have the permission to install or run Docker.
-In that case, you can use [Apptainer](https://apptainer.io/), which allows you to run containers in shared resources
+In that case, you can use [Apptainer](https://apptainer.org/), which allows you to run containers in shared resources
 without installing Docker. Chances are that you already have Apptainer available in institutional computers, check by
 executing the following command:
 ```bash
