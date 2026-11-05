@@ -78,4 +78,3 @@ title: Figures
 {% endfor %}
 
 {% include links.md %}
-
